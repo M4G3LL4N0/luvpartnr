@@ -17,13 +17,11 @@ export default function HomePage() {
           </div>
 
           <h1 className="mt-6 text-5xl font-semibold tracking-tight sm:text-7xl">
-            Turn relationship confusion into structured insight.
+            Precision relationship intelligence for confident decisions.
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-400">
-            LUVPARTNR helps users analyze compatibility, communication,
-            trust, emotional risk, and long-term relationship potential
-            through private AI-powered reports and ongoing case tracking.
+            LUVPARTNR provides private AI-powered analysis of compatibility, trust, communication patterns, and long-term potential—turning uncertainty into strategic clarity.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
@@ -31,13 +29,13 @@ export default function HomePage() {
               href="/app"
               className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:opacity-90"
             >
-              Start private analysis
+              Begin private analysis
             </a>
             <a
               href="/sample-report"
               className="rounded-full border border-white/15 px-6 py-3 text-sm text-white transition hover:bg-white/5"
             >
-              See sample report
+              View sample report
             </a>
           </div>
         </div>
@@ -45,28 +43,28 @@ export default function HomePage() {
         <div className="mt-20 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {[
             {
-              title: "Relationship intelligence reports",
-              text: "Turn messy conversations, notes, and behavioral observations into clear structured analysis.",
+              title: "Structured analysis",
+              text: "Transform conversations, notes, and observations into clear, actionable insights.",
             },
             {
-              title: "Risk scoring",
-              text: "Assess inconsistency, emotional instability, manipulation signals, and long-term risk.",
+              title: "Risk assessment",
+              text: "Quantify emotional risk, inconsistency, and manipulation signals.",
             },
             {
               title: "Compatibility mapping",
-              text: "Compare values, habits, emotional style, and long-term relationship fit.",
+              text: "Compare values, habits, and emotional alignment for long-term fit.",
             },
             {
-              title: "Communication forensics",
-              text: "Analyze vagueness, blame shifting, warmth changes, and accountability patterns.",
+              title: "Communication patterns",
+              text: "Detect vagueness, blame shifting, and accountability trends.",
             },
             {
-              title: "Case file tracking",
-              text: "Keep a private timeline of events, promises, conflicts, and major relationship signals.",
+              title: "Timeline tracking",
+              text: "Maintain a private record of events, promises, and conflicts.",
             },
             {
-              title: "Missing information detection",
-              text: "See what you still do not know and what questions matter most before committing.",
+              title: "Gap analysis",
+              text: "Identify unknowns and critical questions before commitment.",
             },
           ].map((item) => (
             <div
@@ -90,9 +88,7 @@ export default function HomePage() {
               Built for discretion, clarity, and responsible use.
             </h2>
             <p className="mt-6 text-lg leading-8 text-zinc-400">
-              LUVPARTNR is not a spying tool, lie detector, or diagnosis engine.
-              It is a reflective decision-support platform designed to help users
-              think more clearly with the information they already have.
+              LUVPARTNR is a reflective decision-support platform, not a surveillance tool. We help you think more clearly with the information you already have, responsibly and privately.
             </p>
           </div>
         </div>
@@ -109,8 +105,7 @@ export default function HomePage() {
                 Serious decision-support for serious relationships.
               </h2>
               <p className="mt-6 text-lg leading-8 text-zinc-400">
-                Evaluate trust, compatibility, communication patterns, and
-                long-term potential with more structure and less guesswork.
+                Make confident relationship decisions with AI-powered analysis of trust, compatibility, and long-term potential.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4">
