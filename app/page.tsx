@@ -1,7 +1,16 @@
+import "./globals.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "LUVPARTNR",
+  description:
+    "Private AI relationship intelligence for compatibility, trust, risk, and long-term decision-making.",
+};
+
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-black text-white">
-      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
         <div className="max-w-4xl">
           <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
             Private AI relationship intelligence
@@ -69,7 +78,7 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+      </div>
 
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
