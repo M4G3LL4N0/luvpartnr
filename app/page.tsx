@@ -1,3 +1,4 @@
+'s craft.
 import Image from "next/image";
 
 export default function Home() {
@@ -107,7 +108,7 @@ export default function Home() {
       {/* Privacy & Ethics Section */}
       <section className="py-20 px-6 bg-[#0a0a0a]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
             Privacy & Ethics Matter
           </h2>
           <div className="card">
