@@ -1,186 +1,127 @@
-'s craft.
-import Image from "next/image";
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black to-[#1a1a1a]">
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
-            LUVPARTNR
+    <main className="min-h-screen bg-black text-white">
+      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+        <div className="max-w-4xl">
+          <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+            Private AI relationship intelligence
+          </div>
+
+          <h1 className="mt-6 text-5xl font-semibold tracking-tight sm:text-7xl">
+            Turn relationship confusion into structured insight.
           </h1>
-          <p className="text-xl md:text-2xl text-zinc-400 mb-12 max-w-3xl mx-auto">
-            AI-powered relationship intelligence that helps couples build stronger, healthier connections through data-driven insights and personalized recommendations.
+
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-400">
+            LUVPARTNR helps users analyze compatibility, communication,
+            trust, emotional risk, and long-term relationship potential
+            through private AI-powered reports and ongoing case tracking.
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button className="btn-primary">
-              <span>Get Early Access</span>
-            </button>
-            <button className="btn-secondary">
-              <span>Watch Demo</span>
-            </button>
+
+          <div className="mt-10 flex flex-wrap gap-4">
+            <a
+              href="/app"
+              className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:opacity-90"
+            >
+              Start private analysis
+            </a>
+            <a
+              href="/sample-report"
+              className="rounded-full border border-white/15 px-6 py-3 text-sm text-white transition hover:bg-white/5"
+            >
+              See sample report
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-20 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {[
+            {
+              title: "Relationship intelligence reports",
+              text: "Turn messy conversations, notes, and behavioral observations into clear structured analysis.",
+            },
+            {
+              title: "Risk scoring",
+              text: "Assess inconsistency, emotional instability, manipulation signals, and long-term risk.",
+            },
+            {
+              title: "Compatibility mapping",
+              text: "Compare values, habits, emotional style, and long-term relationship fit.",
+            },
+            {
+              title: "Communication forensics",
+              text: "Analyze vagueness, blame shifting, warmth changes, and accountability patterns.",
+            },
+            {
+              title: "Case file tracking",
+              text: "Keep a private timeline of events, promises, conflicts, and major relationship signals.",
+            },
+            {
+              title: "Missing information detection",
+              text: "See what you still do not know and what questions matter most before committing.",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-3xl border border-white/10 bg-white/5 p-6"
+            >
+              <h2 className="text-xl font-semibold">{item.title}</h2>
+              <p className="mt-3 text-sm leading-6 text-zinc-400">{item.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+          <div className="max-w-3xl">
+            <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+              Privacy and ethics
+            </div>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">
+              Built for discretion, clarity, and responsible use.
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-zinc-400">
+              LUVPARTNR is not a spying tool, lie detector, or diagnosis engine.
+              It is a reflective decision-support platform designed to help users
+              think more clearly with the information they already have.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* What We Do Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-            Transform Your Relationship with AI
-          </h2>
-          <p className="text-lg text-zinc-400 mb-16">
-            We analyze communication patterns, emotional dynamics, and relationship health to provide actionable insights that strengthen your bond.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="card">
-              <div className="w-12 h-12 bg-blue-500 rounded-lg mb-6 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeWidth="2" d="M12 6.75l6.75 6.75M12 6.75L5.25 13.5M12 17.25h.01M12 17.25v.01"/>
-                </svg>
+      <section className="border-t border-white/10">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-10">
+            <div className="max-w-3xl">
+              <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+                LUVPARTNR
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">Communication Analysis</h3>
-              <p className="text-zinc-400">
-                Understand your communication patterns and identify areas for improvement.
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">
+                Serious decision-support for serious relationships.
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-zinc-400">
+                Evaluate trust, compatibility, communication patterns, and
+                long-term potential with more structure and less guesswork.
               </p>
-            </div>
-            <div className="card">
-              <div className="w-12 h-12 bg-purple-500 rounded-lg mb-6 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeWidth="2" d="M12 22s8-4 8-10.5S20 2 12 2 4 6 4 12.5 8 22 12 22z"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">Emotional Intelligence</h3>
-              <p className="text-zinc-400">
-                Gain insights into emotional dynamics and learn to navigate conflicts effectively.
-              </p>
-            </div>
-            <div className="card">
-              <div className="w-12 h-12 bg-green-500 rounded-lg mb-6 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeWidth="2" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">Relationship Health Score</h3>
-              <p className="text-zinc-400">
-                Track your relationship's progress with our comprehensive health metrics.
-              </p>
-            </div>
-            <div className="card">
-              <div className="w-12 h-12 bg-orange-500 rounded-lg mb-6 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeWidth="2" d="M12 22c5-4.974 9-10 9-10s-4-5.026-9-10-9 5.026-9 10 4 10 9 10z"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">Personalized Recommendations</h3>
-              <p className="text-zinc-400">
-                Get tailored advice and activities based on your unique relationship dynamics.
-              </p>
-            </div>
-            <div className="card">
-              <div className="w-12 h-12 bg-pink-500 rounded-lg mb-6 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeWidth="2" d="M12 22s8-4 8-10.5S20 2 12 2 4 6 4 12.5 8 22 12 22z"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">Privacy-First Design</h3>
-              <p className="text-zinc-400">
-                Your data is encrypted and never shared without your explicit consent.
-              </p>
-            </div>
-            <div className="card">
-              <div className="w-12 h-12 bg-red-500 rounded-lg mb-6 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeWidth="2" d="M12 22c5-4.974 9-10 9-10s-4-5.026-9-10-9 5.026-9 10 4 10 9 10z"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">24/7 AI Support</h3>
-              <p className="text-zinc-400">
-                Access relationship guidance anytime with our intelligent AI companion.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Privacy & Ethics Section */}
-      <section className="py-20 px-6 bg-[#0a0a0a]">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-            Privacy & Ethics Matter
-          </h2>
-          <div className="card">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold mb-4 text-white">
-                  Your Data, Your Control
-                </h3>
-                <p className="text-zinc-400 mb-4">
-                  We believe relationship growth should never come at the cost of privacy. All data is encrypted end-to-end and processed locally when possible.
-                </p>
-                <ul className="space-y-2 text-zinc-400">
-                  <li className="flex items-start">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-1 mr-3"></span>
-                    End-to-end encryption
-                  </li>
-                  <li className="flex items-start">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-1 mr-3"></span>
-                    No third-party sharing
-                  </li>
-                  <li className="flex items-start">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-1 mr-3"></span>
-                    Complete data portability
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-4 text-white">
-                  Ethical AI Development
-                </h3>
-                <p className="text-zinc-400 mb-4">
-                  Our AI is trained to promote healthy relationships, not manipulate emotions. We actively work to eliminate bias and ensure our recommendations are always in your best interest.
-                </p>
-                <ul className="space-y-2 text-zinc-400">
-                  <li className="flex items-start">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-1 mr-3"></span>
-                    Bias mitigation protocols
-                  </li>
-                  <li className="flex items-start">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-1 mr-3"></span>
-                    Transparent algorithms
-                  </li>
-                  <li className="flex items-start">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-1 mr-3"></span>
-                    Regular ethical audits
-                  </li>
-                </ul>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <a
+                  href="/pricing"
+                  className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:opacity-90"
+                >
+                  View pricing
+                </a>
+                <a
+                  href="/investor"
+                  className="rounded-full border border-white/15 px-6 py-3 text-sm text-white transition hover:bg-white/5"
+                >
+                  Investor overview
+                </a>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Final CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-            Ready to Transform Your Relationship?
-          </h2>
-          <p className="text-lg text-zinc-400 mb-12">
-            Join our early access program and be among the first to experience AI-powered relationship growth.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button className="btn-primary">
-              <span>Join Waitlist</span>
-            </button>
-            <button className="btn-secondary">
-              <span>Contact Sales</span>
-            </button>
-          </div>
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }
