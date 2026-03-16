@@ -7,7 +7,7 @@ export default async function ReportsPage() {
   const supabase = await createClient();
   const { data: reports, error } = await supabase
     .from('reports')
-    .select('*')
+    .select('id, title, created_at, overall_score, case_file_id')
     .order('created_at', { ascending: false });
 
   if (error) {

@@ -77,12 +77,36 @@ export default async function CaseDetailPage({
                       {entry.content}
                     </p>
                   </div>
-                  <Link
-                    href={`/app/cases/${id}/entries/${entry.id}/edit`}
-                    className="rounded-full border border-white/15 px-4 py-2 text-xs text-white"
-                  >
-                    Edit
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/app/cases/${id}/entries/${entry.id}/edit`}
+                      className="rounded-full border border-white/15 px-4 py-2 text-xs text-white"
+                    >
+                      Edit
+                    </Link>
+                    {entry.user_id === user.id && (
+                      <button
+                        type="button"
+                        className="rounded-full border border-red-500 px-3 py-1 text-sm text-red-500"
+                        onClick={() => {
+                          supabase
+                            .from("case_entries")
+                            .delete()
+                            .eq("id", entry.id)
+                            .eq("user_id", user.id)
+                            .single()
+                            .then(() => {
+                              window.location.reload();
+                            })
+                            .catch((err) => {
+                              alert("Failed to delete entry: " + err.message);
+                            });
+                        }}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

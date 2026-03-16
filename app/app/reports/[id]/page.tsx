@@ -20,6 +20,9 @@ export default async function ReportDetailPage({
     notFound();
   }
 
+  // Parse report_json if it exists
+  const reportData = report.report_json ? JSON.parse(report.report_json) : {};
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -51,22 +54,76 @@ export default async function ReportDetailPage({
             </div>
 
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Description</h2>
+              <h2 className="text-xl font-semibold text-white mb-3">Executive Summary</h2>
               <p className="text-gray-300 whitespace-pre-wrap">
-                {report.description || 'No description provided.'}
+                {reportData.executive_summary || 'No executive summary provided.'}
               </p>
             </div>
 
-            {report.report_json && (
-              <div className="mt-8">
-                <h2 className="text-xl font-semibold text-white mb-3">Report Data (JSON)</h2>
-                <div className="bg-gray-950 border border-gray-800 rounded-lg overflow-hidden">
-                  <pre className="p-4 overflow-x-auto text-sm text-gray-300 font-mono">
-                    {JSON.stringify(report.report_json, null, 2)}
-                  </pre>
-                </div>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Scores</h2>
+              <div className="space-y-2">
+                {['trustworthiness', 'emotionalMaturity', 'consistency', 'compatibility', 'communicationQuality', 'relationshipRisk'].map((key) => (
+                  <div key={key} className="flex items-start gap-2">
+                    <span className="text-sm text-gray-300">{key.replace(/([A-Z])/g, ' $1').toLowerCase()}:</span>
+                    <span className="text-sm text-gray-300">
+                      {typeof reportData.scores?.[key] === 'number' ? reportData.scores?.[key].toFixed(1) : 'N/A'}
+                    </span>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Red Flags</h2>
+              <ul className="space-y-2">
+                {reportData.red_flags?.map((flag, index) => (
+                  <li key={index} className="text-gray-300">
+                    {flag}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Green Flags</h2>
+              <ul className="space-y-2">
+                {reportData.green_flags?.map((flag, index) => (
+                  <li key={index} className="text-gray-300">
+                    {flag}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Missing Information</h2>
+              <ul className="space-y-2">
+                {reportData.missing_info?.map((info, index) => (
+                  <li key={index} className="text-gray-300">
+                    {info}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Next Steps</h2>
+              <ul className="space-y-2">
+                {reportData.next_steps?.map((step, index) => (
+                  <li key={index} className="text-gray-300">
+                    {step}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Long-Term Outlook</h2>
+              <p className="text-gray-300 whitespace-pre-wrap">
+                {reportData.long_term_outlook || 'No long-term outlook provided.'}
+              </p>
+            </div>
           </div>
         </div>
       </div>
