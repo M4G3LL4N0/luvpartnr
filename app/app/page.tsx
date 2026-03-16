@@ -99,6 +99,52 @@ export default async function AppShellPage() {
                 </div>
               </div>
             </div>
+          
+          <div className="mt-12">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Dashboard Summary</h2>
+              <div className="flex space-x-4">
+                <button 
+                  className="px-6 py-3 rounded-md bg-white/10 hover:bg-white/5 text-sm font-medium text-zinc-400 transition"
+                  href="/app/cases/new"
+                >
+                  New Case File
+                </button>
+                <button 
+                  className="px-6 py-3 rounded-md bg-white/10 hover:bg-white/5 text-sm font-medium text-zinc-400 transition"
+                  href="/app/reports"
+                >
+                  View Reports
+                </button>
+              </div>
+            </div>
+            
+            <div className="mt-6">
+              <div className="bg-white/5 p-6 rounded-lg">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="font-medium text-white">Total Cases: 5</h3>
+                    <p className="text-sm text-zinc-400">Active cases requiring attention</p>
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-white">Recent Activity: 2 entries</h3>
+                    <p className="text-sm text-zinc-400">Updated in the last 24 hours</p>
+                  </div>
+                </div>
+                <div className="border-t border-white/10 pt-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium text-white">Compatibility Score: 92%</h3>
+                      <p className="text-sm text-zinc-400">High compatibility with all clients</p>
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-white">Communication Quality: 4.8/5</h3>
+                      <p className="text-sm text-zinc-400">Excellent client communication</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
