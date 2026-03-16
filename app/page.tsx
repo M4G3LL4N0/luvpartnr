@@ -14,80 +14,70 @@ export default function HomePage() {
         {/* Hero Section */}
         <div className="max-w-5xl">
           <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">
-            Relationship Intelligence Platform
+            Strategic Relationship Insights
           </div>
           <h1 className="mt-6 text-5xl font-semibold tracking-tight sm:text-7xl leading-tight">
-            Transform relationship ambiguity into strategic clarity.
+            Elevate Your Decision-Making with AI-Driven Relationship Intelligence
           </h1>
           <p className="mt-8 max-w-3xl text-xl leading-8 text-zinc-400">
-            LUVPARTNR provides private AI-powered analysis of compatibility, trust, communication patterns, and long-term potential. Make confident decisions with structured intelligence, not guesswork.
+            LUVPARTNR empowers you to make informed, data-driven decisions about your relationships, leveraging AI analysis of compatibility, trust, and long-term potential.
           </p>
           <div className="mt-12 flex flex-wrap gap-4">
             <a
               href="/app"
               className="rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-zinc-200"
             >
-              Start private analysis
+              Unlock Private Analysis
             </a>
             <a
               href="/sample-report"
               className="rounded-full border border-zinc-700 px-8 py-4 text-sm font-medium text-white transition hover:bg-zinc-900"
             >
-              View sample report
+              Explore Sample Insights
             </a>
           </div>
         </div>
 
         {/* Value Proposition Grid */}
-        <div className="mt-32 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {[
-            {
-              title: "Structured Intelligence",
-              text: "Transform conversations, notes, and observations into clear, actionable insights with our proprietary analysis framework.",
-            },
-            {
-              title: "Risk Quantification",
-              text: "Assess emotional risk, inconsistency patterns, and manipulation signals with objective scoring systems.",
-            },
-            {
-              title: "Compatibility Mapping",
-              text: "Compare values, habits, and emotional alignment to evaluate long-term fit beyond surface chemistry.",
-            },
-            {
-              title: "Communication Forensics",
-              text: "Detect vagueness, blame shifting, and accountability trends in dialogue patterns over time.",
-            },
-            {
-              title: "Timeline Tracking",
-              text: "Maintain a private, chronological record of events, promises, conflicts, and relationship evolution.",
-            },
-            {
-              title: "Gap Analysis",
-              text: "Identify critical unknowns and essential questions before escalating commitment.",
-            },
-          ].map((item) => (
-            <div
-              key={item.title}
-              className="rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm"
-            >
-              <h2 className="text-xl font-semibold text-white">{item.title}</h2>
-              <p className="mt-4 text-base leading-7 text-zinc-400">{item.text}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Privacy & Ethics Section */}
-        <section className="mt-32 border-t border-zinc-800 pt-20">
-          <div className="max-w-3xl">
-            <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">
-              Privacy & Ethics
-            </div>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">
-              Built for discretion, clarity, and responsible use.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-zinc-400">
-              LUVPARTNR is a reflective decision-support platform, not a surveillance tool. We help you think more clearly with the information you already have—responsibly, privately, and ethically. Our outputs are interpretations, not certainties, and never substitute for professional advice.
-            </p>
+        <section className="mt-32">
+          <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+            Key Benefits
+          </div>
+          <div className="mt-8 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+            {[
+              {
+                title: "Data-Driven Decision-Making",
+                text: "Make informed choices with objective analysis of relationship dynamics.",
+              },
+              {
+                title: "Risk Assessment and Mitigation",
+                text: "Identify potential risks and develop strategies to navigate complex relationship challenges.",
+              },
+              {
+                title: "Compatibility and Long-Term Potential",
+                text: "Evaluate the foundation for a successful, long-term connection with AI-driven insights.",
+              },
+              {
+                title: "Emotional Intelligence and Awareness",
+                text: "Develop a deeper understanding of your emotional landscape and its impact on relationships.",
+              },
+              {
+                title: "Private and Secure Analysis",
+                text: "Trust our secure, private platform to safeguard your personal information and relationship data.",
+              },
+              {
+                title: "Actionable Recommendations",
+                text: "Receive personalized guidance to enhance your relationships and achieve your goals.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 backdrop-blur-sm"
+              >
+                <h2 className="text-xl font-semibold text-white">{item.title}</h2>
+                <p className="mt-4 text-base leading-7 text-zinc-400">{item.text}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -96,23 +86,23 @@ export default function HomePage() {
           <div className="rounded-3xl border border-zinc-800 bg-gradient-to-b from-zinc-900 to-black p-12 text-center">
             <div className="mx-auto max-w-3xl">
               <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
-                Serious decision-support for serious relationships.
+                Empower Your Relationship Decisions
               </h2>
               <p className="mt-6 text-lg leading-8 text-zinc-400">
-                Make confident relationship decisions with AI-powered analysis of trust, compatibility, and long-term potential.
+                Discover how LUVPARTNR's AI-driven relationship intelligence can help you navigate complex relationships and make informed decisions.
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-4">
                 <a
                   href="/pricing"
                   className="rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-zinc-200"
                 >
-                  View pricing
+                  Explore Pricing Options
                 </a>
                 <a
                   href="/investor"
                   className="rounded-full border border-zinc-700 px-8 py-4 text-sm font-medium text-white transition hover:bg-zinc-900"
                 >
-                  Investor overview
+                  Learn About Investment Opportunities
                 </a>
               </div>
             </div>
