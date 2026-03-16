@@ -7,7 +7,7 @@ function safeArray(value: unknown): string[] {
 }
 
 function safeScores(value: unknown) {
-  const obj = typeof value === "object" && value !== null ? value as Record<string, unknown> : {};
+  const obj = typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};
   return {
     trustworthiness: Number(obj.trustworthiness ?? 0),
     emotionalMaturity: Number(obj.emotionalMaturity ?? 0),
@@ -196,10 +196,7 @@ ${entryText || "No entries yet."}
       }
     });
 
-    const raw =
-      response.output_text ||
-      "{}";
-
+    const raw = response.output_text || "{}";
     const parsed = JSON.parse(raw);
 
     const report = {
