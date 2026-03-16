@@ -53,6 +53,7 @@ export default async function ReportDetailPage({
               )}
             </div>
 
+            {/* Executive Summary */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-white mb-3">Executive Summary</h2>
               <p className="text-gray-300 whitespace-pre-wrap">
@@ -60,64 +61,113 @@ export default async function ReportDetailPage({
               </p>
             </div>
 
+            {/* Score Overview Cards */}
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Scores</h2>
-              <div className="space-y-2">
-                {['trustworthiness', 'emotionalMaturity', 'consistency', 'compatibility', 'communicationQuality', 'relationshipRisk'].map((key) => (
-                  <div key={key} className="flex items-start gap-2">
-                    <span className="text-sm text-gray-300">{key.replace(/([A-Z])/g, ' $1').toLowerCase()}:</span>
-                    <span className="text-sm text-gray-300">
-                      {typeof reportData.scores?.[key] === 'number' ? reportData.scores?.[key].toFixed(1) : 'N/A'}
-                    </span>
+              <h2 className="text-xl font-semibold text-white mb-3">Score Overview</h2>
+              <div className="grid gap-4 md:grid-cols-3">
+                {Object.entries(reportData.scores ?? {}).map(([key, value]) => (
+                  <div                    key={key}
+                    className="rounded-3xl border border-white/10 bg-white/5 p-6 flex flex-col items-center justify-center"
+                  >
+                    <div className="text-sm capitalize text-zinc-400 font-medium">
+                      {key}
+                    </div>
+                    <div className="mt-2 text-3xl font-semibold text-white">
+                      {String(value)}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
+            {/* Observed Facts */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Observed Facts</h2>
+              <ul className="space-y-2 text-gray-300">
+                {reportData.observedFacts?.map((fact, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-sm mr-2">•</span>
+                    <span className="flex-1">{fact}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Strong Inferences */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Strong Inferences</h2>
+              <ul className="space-y-2 text-gray-300">
+                {reportData.strongInferences?.map((inf, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-sm mr-2">•</span>
+                    <span className="flex-1">{inf}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Weak Inferences */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Weak Inferences</h2>
+              <ul className="space-y-2 text-gray-300">
+                {reportData.weakInferences?.map((inf, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-sm mr-2">•</span>
+                    <span className="flex-1">{inf}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Red Flags */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-white mb-3">Red Flags</h2>
-              <ul className="space-y-2">
-                {reportData.red_flags?.map((flag, index) => (
-                  <li key={index} className="text-gray-300">
+              <ul className="space-y-2 text-gray-300">
+                {reportData.red_flags?.map((flag, idx) => (
+                  <li key={idx} className="text-gray-300">
                     {flag}
                   </li>
                 ))}
               </ul>
             </div>
 
+            {/* Green Flags */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-white mb-3">Green Flags</h2>
-              <ul className="space-y-2">
-                {reportData.green_flags?.map((flag, index) => (
-                  <li key={index} className="text-gray-300">
+              <ul className="space-y-2 text-gray-300">
+                {reportData.green_flags?.map((flag, idx) => (
+                  <li key={idx} className="text-gray-300">
                     {flag}
                   </li>
                 ))}
               </ul>
             </div>
 
+            {/* Missing Information */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-white mb-3">Missing Information</h2>
-              <ul className="space-y-2">
-                {reportData.missing_info?.map((info, index) => (
-                  <li key={index} className="text-gray-300">
+              <ul className="space-y-2 text-gray-300">
+                {reportData.missing_info?.map((info, idx) => (
+                  <li key={idx} className="text-gray-300">
                     {info}
                   </li>
                 ))}
               </ul>
             </div>
 
+            {/* Next Steps */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-white mb-3">Next Steps</h2>
-              <ul className="space-y-2">
-                {reportData.next_steps?.map((step, index) => (
-                  <li key={index} className="text-gray-300">
+              <ul className="space-y-2 text-gray-300">
+                {reportData.next_steps?.map((step, idx) => (
+                  <li key={idx} className="text-gray-300">
                     {step}
                   </li>
                 ))}
               </ul>
             </div>
 
+            {/* Long-Term Outlook */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-white mb-3">Long-Term Outlook</h2>
               <p className="text-gray-300 whitespace-pre-wrap">
