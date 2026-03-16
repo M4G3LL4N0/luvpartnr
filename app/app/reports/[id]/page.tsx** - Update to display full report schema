@@ -1,0 +1,261 @@
+import { createClient } from '@/lib/supabase/server';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+
+export const dynamic = 'force-dynamic';
+
+export default async function ReportDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const supabase = await createClient();
+  const { data: report, error } = await supabase
+    .from('reports')
+    .select('*')
+    .eq('id', params.id)
+    .single();
+
+  if (error || !report) {
+    notFound();
+  }
+
+  const reportData = report.report_json as {
+    observedFacts?: string[];
+    strongInferences?: string[];
+    weakInferences?: string[];
+    missingInformation?: string[];
+    redFlags?: string[];
+    greenFlags?: string[];
+    nextSteps?: string[];
+    longTermOutlook?: {
+      oneYear: string;
+      fiveYears: string;
+      twentyYears: string;
+    };
+    scores?: {
+      trustworthiness: number;
+      emotionalMaturity: number;
+      consistency: number;
+      compatibility: number;
+      communicationQuality: number;
+      relationshipRisk: number;
+    };
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <Link
+         ="../"
+          className="text-indigo-400 hover:text-indigo-300 mb-6 inline-flex items-center text-sm font-medium transition-colors"
+        >
+          <span className="mr-2">←</span> Back to Reports
+        </Link>
+
+        <div className="bg-gray-900/50 border border-white/10 rounded-2xl overflow-hidden">
+          <div className="px-6 py-8 sm:px-8">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+              <div>
+                <h1 className="text-3xl font-bold text-white">{report.title}</h1>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                  <span>Created: {new Date(report.created_at).toLocaleString()}</span>
+                  {report.overall_score !== undefined && (
+                    <span className="px-3 py-1 bg-indigo-900/30 text-indigo-300 rounded-full text-xs font-medium">
+                      Score: {typeof report.overall_score === 'number' ? report.overall_score.toFixed(1) : report.overall_score}
+                    </span>
+                  )}
+                  {report.case_file_id && (
+                    <Link
+                      href={`/app/cases/${report.case_file_id}`}
+                      className="px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-xs font-medium hover:bg-gray-700 transition-colors"
+                    >
+                      Case: {report.case_file_id}
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {report.summary && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-white mb-3">Executive Summary</h2>
+                <p className="text-gray-300 leading-relaxed">{report.summary}</p>
+              </div>
+            )}
+
+            {reportData.scores && (
+              <div className="mb-10">
+                <h2 className="text-xl font-semibold text-white mb-4">Score Cards</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  {Object.entries(reportData.scores).map(([key, value]) => (
+                    <div key={key} className="bg-gray-950/50 border border-gray-800 rounded-xl p-4 text-center">
+                      <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </div>
+                      <div className="text-2xl font-bold text-white">{value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-8">
+                {reportData.observedFacts && reportData.observedFacts.length > 0 && (
+                  <section className="bg-gray-900/30 border border-white/5 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                      Observed Facts
+                    </h2>
+                    <ul className="space-y-3">
+                      {reportData.observedFacts.map((fact, index) => (
+                        <li key={index} className="text-gray-300 flex items-start">
+                          <span className="text-blue-400 mr-2">•</span>
+                          <span>{fact}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {reportData.strongInferences && reportData.strongInferences.length > 0 && (
+                  <section className="bg-gray-900/30 border border-white/5 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                      Strong Inferences
+                    </h2>
+                    <ul className="space-y-3">
+                      {reportData.strongInferences.map((inference, index) => (
+                        <li key={index} className="text-gray-300 flex items-start">
+                          <span className="text-green-400 mr-2">•</span>
+                          <span>{inference}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {reportData.weakInferences && reportData.weakInferences.length > 0 && (
+                  <section className="bg-gray-900/30 border border-white/5 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></span>
+                      Weak Inferences
+                    </h2>
+                    <ul className="space-y-3">
+                      {reportData.weakInferences.map((inference, index) => (
+                        <li key={index} className="text-gray-300 flex items-start">
+                          <span className="text-yellow-400 mr-2">•</span>
+                          <span>{inference}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+              </div>
+
+              <div className="space-y-8">
+                {reportData.redFlags && reportData.redFlags.length > 0 && (
+                  <section className="bg-gray-900/30 border border-red-900/30 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-red-400 mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
+                      Red Flags
+                    </h2>
+                    <ul className="space-y-3">
+                      {reportData.redFlags.map((flag, index) => (
+                        <li key={index} className="text-gray-300 flex items-start">
+                          <span className="text-red-400 mr-2">•</span>
+                          <span>{flag}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {reportData.greenFlags && reportData.greenFlags.length > 0 && (
+                  <section className="bg-gray-900/30 border border-green-900/30 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-green-400 mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                      Green Flags
+                    </h2>
+                    <ul className="space-y-3">
+                      {reportData.greenFlags.map((flag, index) => (
+                        <li key={index} className="text-gray-300 flex items-start">
+                          <span className="text-green-400 mr-2">•</span>
+                          <span>{flag}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {reportData.missingInformation && reportData.missingInformation.length > 0 && (
+                  <section className="bg-gray-900/30 border border-yellow-900/30 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-yellow-400 mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></span>
+                      Missing Information
+                    </h2>
+                    <ul className="space-y-3">
+                      {reportData.missingInformation.map((item, index) => (
+                        <li key={index} className="text-gray-300 flex items-start">
+                          <span className="text-yellow-400 mr-2">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {reportData.nextSteps && reportData.nextSteps.length > 0 && (
+                  <section className="bg-gray-900/30 border border-indigo-900/30 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-indigo-400 mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>
+                      Next Steps
+                    </h2>
+                    <ul className="space-y-3">
+                      {reportData.nextSteps.map((step, index) => (
+                        <li key={index} className="text-gray-300 flex items-start">
+                          <span className="text-indigo-400 mr-2">•</span>
+                          <span>{step}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {reportData.longTermOutlook && (
+                  <section className="bg-gray-900/30 border border-purple-900/30 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>
+                      Long-term Outlook
+                    </h2>
+                    <div className="space-y-4">
+                      <div className="flex items-start">
+                        <span className="text-purple-400 font-medium w-24 flex-shrink-0">1 Year:</span>
+                        <span className="text-gray-300">{reportData.longTermOutlook.oneYear}</span>
+                      </div>
+                      <div className="flex items-start">
+                        <span className="text-purple-400 font-medium w-24 flex-shrink-0">5 Years:</span>
+                        <span className="text-gray-300">{reportData.longTermOutlook.fiveYears}</span>
+                      </div>
+                      <div className="flex items-start">
+                        <span className="text-purple-400 font-medium w-24 flex-shrink-0">20 Years:</span>
+                        <span className="text-gray-300">{reportData.longTermOutlook.twentyYears}</span>
+                      </div>
+                    </div>
+                  </section>
+                )}
+              </div>
+            </div>
+
+            {!reportData.observedFacts?.length && !reportData.strongInferences?.length && !reportData.weakInferences?.length && !reportData.redFlags?.length && !reportData.greenFlags?.length && !reportData.missingInformation?.length && !reportData.nextSteps?.length && !reportData.longTermOutlook && (
+              <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-8 text-zinc-400">
+                No detailed report data available.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
