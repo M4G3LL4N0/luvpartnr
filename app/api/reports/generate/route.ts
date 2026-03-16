@@ -128,7 +128,7 @@ ${entryText || "No entries yet."}
 `.trim();
 
     const response = await openai.responses.create({
-      model: "gpt-5.4",
+      model: "gpt-4o",
       input: prompt,
       text: {
         format: {
