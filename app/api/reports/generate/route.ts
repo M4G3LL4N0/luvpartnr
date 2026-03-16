@@ -33,13 +33,14 @@ export async function POST(req: Request) {
     );
   }
 
-  // Fetch case entries
+  // Fetch most recent 30 entries
   const { data: entries, error: entriesError } = await supabase
     .from("case_entries")
     .select("id, entry_type, content, created_at")
     .eq("case_file_id", caseFileId)
     .eq("user_id", user.id)
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: true })
+    .limit(30);
 
   if (entriesError) {
     return NextResponse.json(
@@ -48,9 +49,9 @@ export async function POST(req: Request) {
     );
   }
 
-  // Build prompt for OpenAI
+  // Build grounded system prompt
   const prompt = `
-You are a relationship intelligence analyst. Analyze the following case file and entries to generate a structured relationship intelligence report.
+You are a relationship intelligence analyst. Generate a structured report based on the following case data. Focus strictly on the provided entries and avoid assumptions.
 
 CASE FILE DETAILS:
 - Title: ${caseFile.title}
@@ -58,17 +59,18 @@ CASE FILE DETAILS:
 - Relationship Stage: ${caseFile.relationship_stage || "Not provided"}
 - Created At: ${new Date(caseFile.created_at).toLocaleDateString()}
 
-CASE ENTRIES (${entries.length} total):
+RECENT ENTRIES (last 30):
 ${entries
+  .slice(-30) // Ensure we only use up to 30 entries
   .map(
     (entry) => `
 - [${new Date(entry.created_at).toLocaleDateString()}] ${entry.entry_type.toUpperCase()}: ${entry.content}`
   )
   .join("\n")}
-  
-Generate a JSON object with EXACTLY this structure (no additional fields, no markdown):
+
+REQUIRED OUTPUT STRUCTURE:
 {
-  "executiveSummary": "string (2-3 sentences summarizing key insights)",
+  "executiveSummary": "2-3 sentence summary of key insights",
   "scores": {
     "trustworthiness": number (0-100),
     "emotionalMaturity": number (0-100),
@@ -77,28 +79,26 @@ Generate a JSON object with EXACTLY this structure (no additional fields, no mar
     "communicationQuality": number (0-100),
     "relationshipRisk": number (0-100)
   },
-  "redFlags": ["string", "string", "string"],
-  "greenFlags": ["string", "string", "string"],
-  "missingInformation": ["string", "string", "string", "string"],
-  "nextSteps": ["string", "string", "string"],
+  "observedFacts": ["specific facts from entries"],
+  "strongInferences": ["logical conclusions from facts"],
+  "weakInferences": ["uncertain or speculative conclusions"],
+  "missingInformation": ["specific data gaps"],
+  "redFlags": ["specific concerns"],
+  "greenFlags": ["positive indicators"],
+  "nextSteps": ["actionable recommendations"],
   "longTermOutlook": {
-    "oneYear": "string",
-    "fiveYears": "string",
-    "twentyYears": "string"
+    "oneYear": "projection",
+    "fiveYears": "projection",
+    "twentyYears": "projection"
   },
   "overallScore": number (0-100)
 }
 
 Rules:
-1. Base all scores and insights strictly on the provided case entries
-2. If information is insufficient for a score, use 50 as neutral default
-3. Red flags should be specific concerns observed in the entries
-4. Green flags should be positive behaviors observed in the entries
-5. Missing information should be specific gaps in the data provided
-6. Next steps should be actionable recommendations based on the analysis
-7. Long term outlook should be realistic projections based on current trajectory
-8. Overall score should be weighted average of the six scores (trustworthiness 20%, emotionalMaturity 20%, consistency 15%, compatibility 15%, communicationQuality 15%, relationshipRisk 15% inverted)
-9. Output ONLY valid JSON, no other text
+1. Base all analysis strictly on provided entries
+2. Use 50 as neutral default for missing data
+3. Keep all arrays with exact required lengths
+4. Output ONLY valid JSON
 `;
 
   try {
@@ -132,9 +132,12 @@ Rules:
     const requiredFields = [
       "executiveSummary",
       "scores",
+      "observedFacts",
+      "strongInferences",
+      "weakInferences",
+      "missingInformation",
       "redFlags",
       "greenFlags",
-      "missingInformation",
       "nextSteps",
       "longTermOutlook",
       "overallScore",
@@ -164,29 +167,35 @@ Rules:
       }
     }
 
-    // Validate arrays have exactly 3 items (except missingInformation which should have 4)
-    if (!Array.isArray(report.redFlags) || report.redFlags.length !== 3) {
-      report.redFlags = ["Insufficient data for red flag analysis"];
+    // Validate array lengths
+    if (!Array.isArray(report.observedFacts) || report.observedFacts.length < 3) {
+      report.observedFacts = ["Insufficient data for observed facts"];
     }
-    if (!Array.isArray(report.greenFlags) || report.greenFlags.length !== 3) {
-      report.greenFlags = ["Insufficient data for green flag analysis"];
+    if (!Array.isArray(report.strongInferences) || report.strongInferences.length < 3) {
+      report.strongInferences = ["Insufficient data for strong inferences"];
     }
-    if (
-      !Array.isArray(report.missingInformation) ||
-      report.missingInformation.length !== 4
-    ) {
+    if (!Array.isArray(report.weakInferences) || report.weakInferences.length < 3) {
+      report.weakInferences = ["Insufficient data for weak inferences"];
+    }
+    if (!Array.isArray(report.missingInformation) || report.missingInformation.length < 4) {
       report.missingInformation = [
-        "Stress response",
-        "Financial habits",
-        "Conflict repair consistency",
-        "Long-term life alignment",
+        "Stress response patterns",
+        "Financial behavior history",
+        "Conflict resolution consistency",
+        "Long-term life goals",
       ];
     }
-    if (!Array.isArray(report.nextSteps) || report.nextSteps.length !== 3) {
+    if (!Array.isArray(report.redFlags) || report.redFlags.length < 3) {
+      report.redFlags = ["Insufficient data for red flag analysis"];
+    }
+    if (!Array.isArray(report.greenFlags) || report.greenFlags.length < 3) {
+      report.greenFlags = ["Insufficient data for green flag analysis"];
+    }
+    if (!Array.isArray(report.nextSteps) || report.nextSteps.length < 3) {
       report.nextSteps = [
-        "Gather more information about the subject",
+        "Gather more detailed communication records",
         "Observe behavior over next 30 days",
-        "Consider professional consultation if concerns persist",
+        "Consider professional relationship counseling if concerns persist",
       ];
     }
 
@@ -204,35 +213,24 @@ Rules:
       };
     }
 
-    // Validate overallScore
-    if (
-      typeof report.overallScore !== "number" ||
-      report.overallScore < 0 ||
-      report.overallScore > 100
-    ) {
-      // Calculate weighted average if scores are valid
-      const weights = {
-        trustworthiness: 0.2,
-        emotionalMaturity: 0.2,
-        consistency: 0.15,
-        compatibility: 0.15,
-        communicationQuality: 0.15,
-        relationshipRisk: 0.15,
-      };
-      let weightedSum = 0;
-      let totalWeight = 0;
-      for (const [key, weight] of Object.entries(weights)) {
-        if (typeof report.scores[key] === "number") {
-          // Invert relationshipRisk for calculation (lower risk = higher score)
-          const value =
-            key === "relationshipRisk" ? 100 - report.scores[key] : report.scores[key];
-          weightedSum += value * weight;
-          totalWeight += weight;
-        }
+    // Calculate overallScore
+    const weights = {
+      trustworthiness: 0.2,
+      emotionalMaturity: 0.2,
+      consistency: 0.15,
+      compatibility: 0.15,
+      communicationQuality: 0.15,
+      relationshipRisk: 0.15,
+    };
+    let weightedSum = 0;
+    let totalWeight = 0;
+    for (const [key, weight] of Object.entries(weights)) {
+      if (typeof report.scores[key] === "number") {
+        weightedSum += report.scores[key] * weight;
+        totalWeight += weight;
       }
-      report.overallScore =
-        totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 50;
     }
+    report.overallScore = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 50;
 
     // Save report to database
     const { data, error } = await supabase
