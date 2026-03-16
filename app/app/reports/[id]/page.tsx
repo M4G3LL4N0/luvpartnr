@@ -21,42 +21,53 @@ export default async function ReportDetailPage({
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Link
-        href="../"
-        className="text-indigo-600 hover:text-indigo-900 mb-4 inline-block"
-      >
-        &larr; Back to Reports
-      </Link>
-      <h1 className="text-3xl font-bold mb-6">{report.title}</h1>
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            Report Details
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            Created: {new Date(report.created_at).toLocaleString()}
-          </p>
-        </div>
-        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
-          <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">ID</dt>
-              <dd className="mt-1 text-sm text-gray-900">{report.id}</dd>
+    <div className="min-h-screen bg-[#0a0a0a] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <Link
+          href="../"
+          className="text-indigo-400 hover:text-indigo-300 mb-6 inline-flex items-center text-sm font-medium transition-colors"
+        >
+          <span className="mr-2">←</span> Back to Reports
+        </Link>
+
+        <div className="bg-gray-900/50 border border-white/10 rounded-2xl overflow-hidden">
+          <div className="px-6 py-8 sm:px-8">
+            <h1 className="text-3xl font-bold text-white mb-2">{report.title}</h1>
+            <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-6">
+              <span>Created: {new Date(report.created_at).toLocaleString()}</span>
+              {report.overall_score !== undefined && (
+                <span className="px-3 py-1 bg-indigo-900/30 text-indigo-300 rounded-full text-xs font-medium">
+                  Score: {typeof report.overall_score === 'number' ? report.overall_score.toFixed(1) : report.overall_score}
+                </span>
+              )}
+              {report.case_file_id && (
+                <Link
+                  href={`/app/cases/${report.case_file_id}`}
+                  className="px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-xs font-medium hover:bg-gray-700 transition-colors"
+                >
+                  Case: {report.case_file_id}
+                </Link>
+              )}
             </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Updated At</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                {new Date(report.updated_at).toLocaleString()}
-              </dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-sm font-medium text-gray-500">Description</dt>
-              <dd className="mt-1 text-sm text-gray-900 whitespace-pre-wrap">
+
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white mb-3">Description</h2>
+              <p className="text-gray-300 whitespace-pre-wrap">
                 {report.description || 'No description provided.'}
-              </dd>
+              </p>
             </div>
-          </dl>
+
+            {report.report_json && (
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold text-white mb-3">Report Data (JSON)</h2>
+                <div className="bg-gray-950 border border-gray-800 rounded-lg overflow-hidden">
+                  <pre className="p-4 overflow-x-auto text-sm text-gray-300 font-mono">
+                    {JSON.stringify(report.report_json, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
