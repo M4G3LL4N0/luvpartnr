@@ -1,182 +1,181 @@
-import { createClient } from '@/lib/supabase/server';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
-export const dynamic = 'force-dynamic';
+type ReportJson = {
+  executiveSummary?: string;
+  scores?: Record<string, number | string>;
+  observedFacts?: string[];
+  strongInferences?: string[];
+  weakInferences?: string[];
+  missingInformation?: string[];
+  redFlags?: string[];
+  greenFlags?: string[];
+  nextSteps?: string[];
+  longTermOutlook?: {
+    oneYear?: string;
+    fiveYears?: string;
+    twentyYears?: string;
+  };
+};
 
 export default async function ReportDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const supabase = await createClient();
-  const { data: report, error } = await supabase
-    .from('reports')
-    .select('*')
-    .eq('id', params.id)
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login");
+
+  const { data: report } = await supabase
+    .from("reports")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", user.id)
     .single();
 
-  if (error || !report) {
-    notFound();
-  }
+  if (!report) redirect("/app/reports");
 
-  // Parse report_json if it exists
-  const reportData = report.report_json ? JSON.parse(report.report_json) : {};
+  const reportData = (report.report_json ?? {}) as ReportJson;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <Link
-          href="../"
-          className="text-indigo-400 hover:text-indigo-300 mb-6 inline-flex items-center text-sm font-medium transition-colors"
-        >
-          <span className="mr-2">←</span> Back to Reports
-        </Link>
-
-        <div className="bg-gray-900/50 border border-white/10 rounded-2xl overflow-hidden">
-          <div className="px-6 py-8 sm:px-8">
-            <h1 className="text-3xl font-bold text-white mb-2">{report.title}</h1>
-            <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-6">
-              <span>Created: {new Date(report.created_at).toLocaleString()}</span>
-              {report.overall_score !== undefined && (
-                <span className="px-3 py-1 bg-indigo-900/30 text-indigo-300 rounded-full text-xs font-medium">
-                  Score: {typeof report.overall_score === 'number' ? report.overall_score.toFixed(1) : report.overall_score}
-                </span>
-              )}
-              {report.case_file_id && (
-                <Link
-                  href={`/app/cases/${report.case_file_id}`}
-                  className="px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-xs font-medium hover:bg-gray-700 transition-colors"
-                >
-                  Case: {report.case_file_id}
-                </Link>
-              )}
+    <main className="min-h-screen bg-black px-6 py-20 text-white">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+              Saved report
             </div>
+            <h1 className="mt-4 text-4xl font-semibold">{report.title}</h1>
+            <p className="mt-3 max-w-3xl text-zinc-400">
+              {report.summary || "Relationship intelligence report"}
+            </p>
+          </div>
 
-            {/* Executive Summary */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Executive Summary</h2>
-              <p className="text-gray-300 whitespace-pre-wrap">
-                {reportData.executive_summary || 'No executive summary provided.'}
-              </p>
-            </div>
-
-            {/* Score Overview Cards */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Score Overview</h2>
-              <div className="grid gap-4 md:grid-cols-3">
-                {Object.entries(reportData.scores ?? {}).map(([key, value]) => (
-                  <div                    key={key}
-                    className="rounded-3xl border border-white/10 bg-white/5 p-6 flex flex-col items-center justify-center"
-                  >
-                    <div className="text-sm capitalize text-zinc-400 font-medium">
-                      {key}
-                    </div>
-                    <div className="mt-2 text-3xl font-semibold text-white">
-                      {String(value)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Observed Facts */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Observed Facts</h2>
-              <ul className="space-y-2 text-gray-300">
-                {reportData.observedFacts?.map((fact, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-sm mr-2">•</span>
-                    <span className="flex-1">{fact}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Strong Inferences */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Strong Inferences</h2>
-              <ul className="space-y-2 text-gray-300">
-                {reportData.strongInferences?.map((inf, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-sm mr-2">•</span>
-                    <span className="flex-1">{inf}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Weak Inferences */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Weak Inferences</h2>
-              <ul className="space-y-2 text-gray-300">
-                {reportData.weakInferences?.map((inf, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-sm mr-2">•</span>
-                    <span className="flex-1">{inf}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Red Flags */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Red Flags</h2>
-              <ul className="space-y-2 text-gray-300">
-                {reportData.red_flags?.map((flag, idx) => (
-                  <li key={idx} className="text-gray-300">
-                    {flag}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Green Flags */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Green Flags</h2>
-              <ul className="space-y-2 text-gray-300">
-                {reportData.green_flags?.map((flag, idx) => (
-                  <li key={idx} className="text-gray-300">
-                    {flag}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Missing Information */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Missing Information</h2>
-              <ul className="space-y-2 text-gray-300">
-                {reportData.missing_info?.map((info, idx) => (
-                  <li key={idx} className="text-gray-300">
-                    {info}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Next Steps */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Next Steps</h2>
-              <ul className="space-y-2 text-gray-300">
-                {reportData.next_steps?.map((step, idx) => (
-                  <li key={idx} className="text-gray-300">
-                    {step}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Long-Term Outlook */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white mb-3">Long-Term Outlook</h2>
-              <p className="text-gray-300 whitespace-pre-wrap">
-                {reportData.long_term_outlook || 'No long-term outlook provided.'}
-              </p>
-            </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/app/reports"
+              className="rounded-full border border-white/15 px-5 py-3 text-sm text-white"
+            >
+              Back to Reports
+            </Link>
           </div>
         </div>
+
+        <div className="mt-10 space-y-6">
+          <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
+            <h2 className="text-2xl font-semibold">Executive Summary</h2>
+            <p className="mt-4 text-zinc-300">
+              {reportData.executiveSummary || report.summary}
+            </p>
+          </section>
+
+          <section className="grid gap-4 md:grid-cols-3">
+            {Object.entries(reportData.scores || {}).map(([key, value]) => (
+              <div
+                key={key}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6"
+              >
+                <div className="text-sm capitalize text-zinc-400">{key}</div>
+                <div className="mt-2 text-3xl font-semibold">{String(value)}</div>
+              </div>
+            ))}
+          </section>
+
+          <section className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-semibold">Observed Facts</h2>
+              <ul className="mt-4 space-y-3 text-zinc-300">
+                {(reportData.observedFacts || []).map((fact: string, idx: number) => (
+                  <li key={idx}>• {fact}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-semibold">Strong Inferences</h2>
+              <ul className="mt-4 space-y-3 text-zinc-300">
+                {(reportData.strongInferences || []).map((item: string, idx: number) => (
+                  <li key={idx}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-semibold">Weak Inferences</h2>
+              <ul className="mt-4 space-y-3 text-zinc-300">
+                {(reportData.weakInferences || []).map((item: string, idx: number) => (
+                  <li key={idx}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-semibold">Missing Information</h2>
+              <ul className="mt-4 space-y-3 text-zinc-300">
+                {(reportData.missingInformation || []).map((item: string, idx: number) => (
+                  <li key={idx}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-semibold">Red Flags</h2>
+              <ul className="mt-4 space-y-3 text-zinc-300">
+                {(reportData.redFlags || []).map((item: string, idx: number) => (
+                  <li key={idx}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-semibold">Green Flags</h2>
+              <ul className="mt-4 space-y-3 text-zinc-300">
+                {(reportData.greenFlags || []).map((item: string, idx: number) => (
+                  <li key={idx}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
+            <h2 className="text-2xl font-semibold">Next Steps</h2>
+            <ul className="mt-4 space-y-3 text-zinc-300">
+              {(reportData.nextSteps || []).map((item: string, idx: number) => (
+                <li key={idx}>• {item}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
+            <h2 className="text-2xl font-semibold">Long-Term Outlook</h2>
+            <div className="mt-4 space-y-4 text-zinc-300">
+              <p>
+                <strong className="text-white">1 year:</strong>{" "}
+                {reportData.longTermOutlook?.oneYear || "Not provided"}
+              </p>
+              <p>
+                <strong className="text-white">5 years:</strong>{" "}
+                {reportData.longTermOutlook?.fiveYears || "Not provided"}
+              </p>
+              <p>
+                <strong className="text-white">20 years:</strong>{" "}
+                {reportData.longTermOutlook?.twentyYears || "Not provided"}
+              </p>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
