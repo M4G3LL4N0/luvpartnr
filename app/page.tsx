@@ -81,6 +81,37 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Early Access CTA Section */}
+        <section className="mt-32 border-t border-zinc-800 pt-20">
+          <div className="rounded-3xl border border-zinc-800 bg-gradient-to-b from-zinc-900 to-black p-12 text-center">
+            <div className="mx-auto max-w-3xl">
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+                Join Our Early Access Program
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-zinc-400">
+                Be among the first to experience LUVPARTNR's revolutionary relationship intelligence platform. Early access members receive exclusive benefits and priority support.
+              </p>
+              <div className="mt-10 flex flex-wrap justify-center gap-4">
+                <a
+                  href="/early-access"
+                  className="rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-zinc-200"
+                >
+                  Request Early Access
+                </a>
+                <a
+                  href="/pricing"
+                  className="rounded-full border border-zinc-700 px-8 py-4 text-sm font-medium text-white transition hover:bg-zinc-900"
+                >
+                  View Pricing Plans
+                </a>
+              </div>
+              <p className="mt-8 text-sm text-zinc-400">
+                Limited spots available - join now to secure your place in our exclusive early access program
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Final CTA Section */}
         <section className="mt-32 border-t border-zinc-800 pt-20">
           <div className="rounded-3xl border border-zinc-800 bg-gradient-to-b from-zinc-900 to-black p-12 text-center">
