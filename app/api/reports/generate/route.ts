@@ -1,238 +1,225 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
+import { createClient } from "@/lib/supabase/server";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-export async function POST(req: Request) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { caseFileId } = await req.json();
-
-  // Fetch case file
-  const { data: caseFile, error: caseFileError } = await supabase
-    .from("case_files")
-    .select("id, title, subject_name, relationship_stage, created_at")
-    .eq("id", caseFileId)
-    .eq("user_id", user.id)
-    .single();
-
-  if (caseFileError || !caseFile) {
-    return NextResponse.json(
-      { error: "Case file not found or access denied" },
-      { status: 404 }
-    );
-  }
-
-  // Fetch most recent 30 entries
-  const { data: entries, error: entriesError } = await supabase
-    .from("case_entries")
-    .select("id, entry_type, content, created_at")
-    .eq("case_file_id", caseFileId)
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: true })
-    .limit(30);
-
-  if (entriesError) {
-    return NextResponse.json(
-      { error: "Failed to fetch case entries" },
-      { status: 400 }
-    );
-  }
-
-  // Build grounded system prompt
-  const prompt = `
-You are a relationship intelligence analyst. Generate a structured report based on the following case data. Focus strictly on the provided entries and avoid assumptions.
-
-CASE FILE DETAILS:
-- Title: ${caseFile.title}
-- Subject Name: ${caseFile.subject_name || "Not provided"}
-- Relationship Stage: ${caseFile.relationship_stage || "Not provided"}
-- Created At: ${new Date(caseFile.created_at).toLocaleDateString()}
-
-RECENT ENTRIES (last 30):
-${entries
-  .slice(-30) // Ensure we only use up to 30 entries
-  .map(
-    (entry) => `
-- [${new Date(entry.created_at).toLocaleDateString()}] ${entry.entry_type.toUpperCase()}: ${entry.content}`
-  )
-  .join("\n")}
-
-REQUIRED OUTPUT STRUCTURE:
-{
-  "executiveSummary": "2-3 sentence summary of key insights",
-  "scores": {
-    "trustworthiness": number (0-100),
-    "emotionalMaturity": number (0-100),
-    "consistency": number (0-100),
-    "compatibility": number (0-100),
-    "communicationQuality": number (0-100),
-    "relationshipRisk": number (0-100)
-  },
-  "observedFacts": ["specific facts from entries"],
-  "strongInferences": ["logical conclusions from facts"],
-  "weakInferences": ["uncertain or speculative conclusions"],
-  "missingInformation": ["specific data gaps"],
-  "redFlags": ["specific concerns"],
-  "greenFlags": ["positive indicators"],
-  "nextSteps": ["actionable recommendations"],
-  "longTermOutlook": {
-    "oneYear": "projection",
-    "fiveYears": "projection",
-    "twentyYears": "projection"
-  },
-  "overallScore": number (0-100)
+function safeArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((v): v is string => typeof v === "string") : [];
 }
 
-Rules:
-1. Base all analysis strictly on provided entries
-2. Use 50 as neutral default for missing data
-3. Keep all arrays with exact required lengths
-4. Output ONLY valid JSON
-`;
+function safeScores(value: unknown) {
+  const obj = typeof value === "object" && value !== null ? value as Record<string, unknown> : {};
+  return {
+    trustworthiness: Number(obj.trustworthiness ?? 0),
+    emotionalMaturity: Number(obj.emotionalMaturity ?? 0),
+    consistency: Number(obj.consistency ?? 0),
+    compatibility: Number(obj.compatibility ?? 0),
+    communicationQuality: Number(obj.communicationQuality ?? 0),
+    relationshipRisk: Number(obj.relationshipRisk ?? 0),
+  };
+}
 
+export async function POST(req: Request) {
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        {
-          role: "system",
-          content: "You are a relationship intelligence analyst that outputs only valid JSON.",
-        },
-        { role: "user", content: prompt },
-      ],
-      response_format: { type: "json_object" },
-      temperature: 0.3,
+    const apiKey = process.env.OPENAI_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "Missing OPENAI_API_KEY in environment variables." },
+        { status: 500 }
+      );
+    }
+
+    const openai = new OpenAI({ apiKey });
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const caseFileId = body.caseFileId;
+
+    if (!caseFileId || typeof caseFileId !== "string") {
+      return NextResponse.json({ error: "Missing caseFileId" }, { status: 400 });
+    }
+
+    const { data: caseFile, error: caseError } = await supabase
+      .from("case_files")
+      .select("*")
+      .eq("id", caseFileId)
+      .eq("user_id", user.id)
+      .single();
+
+    if (caseError || !caseFile) {
+      return NextResponse.json({ error: "Case file not found" }, { status: 404 });
+    }
+
+    const { data: entries, error: entriesError } = await supabase
+      .from("case_entries")
+      .select("*")
+      .eq("case_file_id", caseFileId)
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(30);
+
+    if (entriesError) {
+      return NextResponse.json({ error: entriesError.message }, { status: 400 });
+    }
+
+    const entryText = (entries ?? [])
+      .map((entry, index) => {
+        return [
+          `Entry ${index + 1}`,
+          `Type: ${entry.entry_type}`,
+          `Created: ${entry.created_at}`,
+          `Content: ${entry.content}`,
+        ].join("\n");
+      })
+      .join("\n\n---\n\n");
+
+    const prompt = `
+You are generating a structured relationship intelligence report.
+
+Important rules:
+- Do not claim certainty.
+- Separate observed facts from inferences.
+- Be calm, analytical, ethical, and grounded.
+- Do not diagnose mental illness.
+- Note when information is missing.
+- Keep recommendations conservative and practical.
+
+Return valid JSON with exactly this shape:
+{
+  "executiveSummary": "string",
+  "scores": {
+    "trustworthiness": number,
+    "emotionalMaturity": number,
+    "consistency": number,
+    "compatibility": number,
+    "communicationQuality": number,
+    "relationshipRisk": number
+  },
+  "observedFacts": ["string"],
+  "strongInferences": ["string"],
+  "weakInferences": ["string"],
+  "missingInformation": ["string"],
+  "redFlags": ["string"],
+  "greenFlags": ["string"],
+  "nextSteps": ["string"],
+  "longTermOutlook": {
+    "oneYear": "string",
+    "fiveYears": "string",
+    "twentyYears": "string"
+  },
+  "overallScore": number
+}
+
+Case file:
+- title: ${caseFile.title ?? ""}
+- subject_name: ${caseFile.subject_name ?? ""}
+- relationship_stage: ${caseFile.relationship_stage ?? ""}
+
+Entries:
+${entryText || "No entries yet."}
+`.trim();
+
+    const response = await openai.responses.create({
+      model: "gpt-5.4",
+      input: prompt,
+      text: {
+        format: {
+          type: "json_schema",
+          name: "relationship_report",
+          schema: {
+            type: "object",
+            additionalProperties: false,
+            properties: {
+              executiveSummary: { type: "string" },
+              scores: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                  trustworthiness: { type: "number" },
+                  emotionalMaturity: { type: "number" },
+                  consistency: { type: "number" },
+                  compatibility: { type: "number" },
+                  communicationQuality: { type: "number" },
+                  relationshipRisk: { type: "number" }
+                },
+                required: [
+                  "trustworthiness",
+                  "emotionalMaturity",
+                  "consistency",
+                  "compatibility",
+                  "communicationQuality",
+                  "relationshipRisk"
+                ]
+              },
+              observedFacts: { type: "array", items: { type: "string" } },
+              strongInferences: { type: "array", items: { type: "string" } },
+              weakInferences: { type: "array", items: { type: "string" } },
+              missingInformation: { type: "array", items: { type: "string" } },
+              redFlags: { type: "array", items: { type: "string" } },
+              greenFlags: { type: "array", items: { type: "string" } },
+              nextSteps: { type: "array", items: { type: "string" } },
+              longTermOutlook: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                  oneYear: { type: "string" },
+                  fiveYears: { type: "string" },
+                  twentyYears: { type: "string" }
+                },
+                required: ["oneYear", "fiveYears", "twentyYears"]
+              },
+              overallScore: { type: "number" }
+            },
+            required: [
+              "executiveSummary",
+              "scores",
+              "observedFacts",
+              "strongInferences",
+              "weakInferences",
+              "missingInformation",
+              "redFlags",
+              "greenFlags",
+              "nextSteps",
+              "longTermOutlook",
+              "overallScore"
+            ]
+          }
+        }
+      }
     });
 
-    const reportText = completion.choices[0].message.content;
-    if (!reportText) {
-      throw new Error("Empty response from OpenAI");
-    }
+    const raw =
+      response.output_text ||
+      "{}";
 
-    let report;
-    try {
-      report = JSON.parse(reportText);
-    } catch (parseError) {
-      console.error("Failed to parse OpenAI response:", reportText);
-      throw new Error("Invalid JSON response from OpenAI");
-    }
+    const parsed = JSON.parse(raw);
 
-    // Validate required fields
-    const requiredFields = [
-      "executiveSummary",
-      "scores",
-      "observedFacts",
-      "strongInferences",
-      "weakInferences",
-      "missingInformation",
-      "redFlags",
-      "greenFlags",
-      "nextSteps",
-      "longTermOutlook",
-      "overallScore",
-    ];
-    for (const field of requiredFields) {
-      if (!(field in report)) {
-        throw new Error(`Missing required field: ${field}`);
-      }
-    }
-
-    // Validate scores structure
-    const scoreKeys = [
-      "trustworthiness",
-      "emotionalMaturity",
-      "consistency",
-      "compatibility",
-      "communicationQuality",
-      "relationshipRisk",
-    ];
-    for (const key of scoreKeys) {
-      if (
-        typeof report.scores[key] !== "number" ||
-        report.scores[key] < 0 ||
-        report.scores[key] > 100
-      ) {
-        report.scores[key] = 50; // Reset to neutral if invalid
-      }
-    }
-
-    // Validate array lengths
-    if (!Array.isArray(report.observedFacts) || report.observedFacts.length < 3) {
-      report.observedFacts = ["Insufficient data for observed facts"];
-    }
-    if (!Array.isArray(report.strongInferences) || report.strongInferences.length < 3) {
-      report.strongInferences = ["Insufficient data for strong inferences"];
-    }
-    if (!Array.isArray(report.weakInferences) || report.weakInferences.length < 3) {
-      report.weakInferences = ["Insufficient data for weak inferences"];
-    }
-    if (!Array.isArray(report.missingInformation) || report.missingInformation.length < 4) {
-      report.missingInformation = [
-        "Stress response patterns",
-        "Financial behavior history",
-        "Conflict resolution consistency",
-        "Long-term life goals",
-      ];
-    }
-    if (!Array.isArray(report.redFlags) || report.redFlags.length < 3) {
-      report.redFlags = ["Insufficient data for red flag analysis"];
-    }
-    if (!Array.isArray(report.greenFlags) || report.greenFlags.length < 3) {
-      report.greenFlags = ["Insufficient data for green flag analysis"];
-    }
-    if (!Array.isArray(report.nextSteps) || report.nextSteps.length < 3) {
-      report.nextSteps = [
-        "Gather more detailed communication records",
-        "Observe behavior over next 30 days",
-        "Consider professional relationship counseling if concerns persist",
-      ];
-    }
-
-    // Validate longTermOutlook structure
-    if (
-      !report.longTermOutlook ||
-      typeof report.longTermOutlook.oneYear !== "string" ||
-      typeof report.longTermOutlook.fiveYears !== "string" ||
-      typeof report.longTermOutlook.twentyYears !== "string"
-    ) {
-      report.longTermOutlook = {
-        oneYear: "Insufficient data for one-year projection",
-        fiveYears: "Insufficient data for five-year projection",
-        twentyYears: "Insufficient data for twenty-year projection",
-      };
-    }
-
-    // Calculate overallScore
-    const weights = {
-      trustworthiness: 0.2,
-      emotionalMaturity: 0.2,
-      consistency: 0.15,
-      compatibility: 0.15,
-      communicationQuality: 0.15,
-      relationshipRisk: 0.15,
+    const report = {
+      executiveSummary: String(parsed.executiveSummary ?? ""),
+      scores: safeScores(parsed.scores),
+      observedFacts: safeArray(parsed.observedFacts),
+      strongInferences: safeArray(parsed.strongInferences),
+      weakInferences: safeArray(parsed.weakInferences),
+      missingInformation: safeArray(parsed.missingInformation),
+      redFlags: safeArray(parsed.redFlags),
+      greenFlags: safeArray(parsed.greenFlags),
+      nextSteps: safeArray(parsed.nextSteps),
+      longTermOutlook: {
+        oneYear: String(parsed.longTermOutlook?.oneYear ?? ""),
+        fiveYears: String(parsed.longTermOutlook?.fiveYears ?? ""),
+        twentyYears: String(parsed.longTermOutlook?.twentyYears ?? "")
+      },
+      overallScore: Number(parsed.overallScore ?? 0)
     };
-    let weightedSum = 0;
-    let totalWeight = 0;
-    for (const [key, weight] of Object.entries(weights)) {
-      if (typeof report.scores[key] === "number") {
-        weightedSum += report.scores[key] * weight;
-        totalWeight += weight;
-      }
-    }
-    report.overallScore = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 50;
 
-    // Save report to database
     const { data, error } = await supabase
       .from("reports")
       .insert({
@@ -241,21 +228,20 @@ Rules:
         title: "Relationship Intelligence Report",
         summary: report.executiveSummary,
         overall_score: report.overallScore,
-        report_json: report,
+        report_json: report
       })
       .select()
       .single();
 
     if (error) {
-      throw error;
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ reportId: data.id });
   } catch (error) {
-    console.error("Error generating report:", error);
-    return NextResponse.json(
-      { error: "Failed to generate report: " + (error as Error).message },
-      { status: 500 }
-    );
+    const message =
+      error instanceof Error ? error.message : "Unknown server error";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
