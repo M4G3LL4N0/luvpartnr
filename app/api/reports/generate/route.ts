@@ -29,7 +29,17 @@ type ReportSchema = {
     fiveYears: string;
     twentyYears: string;
   };
+  entryTags?: Record<string, string[]>;
 };
+
+const ALLOWED_TAGS = new Set([
+  "inconsistency",
+  "avoidance",
+  "emotional volatility",
+  "strong interest",
+  "withdrawal",
+  "mixed signals"
+]);
 
 function safeParseReport(text: string): ReportSchema {
   const parsed = JSON.parse(text);
@@ -57,6 +67,7 @@ function safeParseReport(text: string): ReportSchema {
       fiveYears: String(parsed.longTermOutlook?.fiveYears ?? ""),
       twentyYears: String(parsed.longTermOutlook?.twentyYears ?? ""),
     },
+    entryTags: parsed.entryTags || {},
   };
 }
 
@@ -98,6 +109,7 @@ export async function POST(req: Request) {
 
   const formattedEntries =
     entries?.map((e) => ({
+      id: e.id,
       type: e.entry_type,
       content: e.content,
       created_at: e.created_at,
@@ -122,6 +134,21 @@ Your job:
 - separate facts from inferences
 - avoid certainty when data is incomplete
 - highlight risks, signals, and missing information
+
+SIGNAL TAGGING:
+For each entry, assign tags from this list based on behavioral signals:
+- inconsistency: contradictory statements or behaviors
+- avoidance: dodging topics, questions, or responsibilities
+- emotional volatility: rapid mood swings, overreactions
+- strong interest: intense focus, pursuit, or investment
+- withdrawal: pulling back, reduced engagement, silence
+- mixed signals: conflicting messages, hot-and-cold behavior
+
+Rules for tagging:
+- Only assign tags that clearly apply to the entry
+- An entry can have multiple tags
+- If no tags apply, return an empty array for that entry
+- Do NOT invent new tags outside this list
 
 STRICT RULES:
 - Do NOT assume facts not present
@@ -171,6 +198,10 @@ Return JSON with exactly this shape:
     "oneYear": "string",
     "fiveYears": "string",
     "twentyYears": "string"
+  },
+  "entryTags": {
+    "entry_id_1": ["tag1", "tag2"],
+    "entry_id_2": ["tag3"]
   }
 }
 `;
@@ -255,6 +286,13 @@ Return JSON with exactly this shape:
                   twentyYears: { type: "string" }
                 },
                 required: ["oneYear", "fiveYears", "twentyYears"]
+              },
+              entryTags: {
+                type: "object",
+                additionalProperties: {
+                  type: "array",
+                  items: { type: "string" }
+                }
               }
             },
             required: [
@@ -276,6 +314,42 @@ Return JSON with exactly this shape:
     });
 
     const report = safeParseReport(response.output_text);
+
+    // Update entry tags (without overwriting manually added ones)
+    const entryTags = report.entryTags || {};
+    
+    const updatePromises = formattedEntries.map(async (entry) => {
+      const entryId = entry.id;
+      const newTags = (entryTags[entryId] || [])
+        .filter(tag => typeof tag === 'string' && ALLOWED_TAGS.has(tag.toLowerCase()));
+
+      if (newTags.length === 0) {
+        return;
+      }
+
+      // Get current tags
+      const { data: currentEntry } = await supabase
+        .from("case_entries")
+        .select("tags")
+        .eq("id", entryId)
+        .single();
+
+      const currentTags = currentEntry?.tags || [];
+      
+      // Merge tags (case-insensitive deduplication)
+      const mergedTags = [...new Set([
+        ...currentTags.map(t => t.toLowerCase()),
+        ...newTags.map(t => t.toLowerCase())
+      ])];
+
+      // Update entry
+      await supabase
+        .from("case_entries")
+        .update({ tags: mergedTags })
+        .eq("id", entryId);
+    });
+
+    await Promise.all(updatePromises);
 
     // Create compressed memory update
     const memoryUpdate = {
