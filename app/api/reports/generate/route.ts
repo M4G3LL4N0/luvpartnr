@@ -106,7 +106,7 @@ export async function POST(req: Request) {
     .eq("case_file_id", caseFileId)
     .eq("user_id", user.id);
 
-  const version = reportCount + 1;
+  const version = (reportCount ?? 0) + 1;
   const title = `Relationship Intelligence Report v${version}`;
 
   const systemPrompt = `
