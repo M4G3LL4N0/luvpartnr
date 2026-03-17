@@ -84,6 +84,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Case not found" }, { status: 404 });
   }
 
+  // Load memory summary if exists
+  const memorySummary = caseFile.memory_summary || {};
+
+  // Fetch case entries
   const { data: entries } = await supabase
     .from("case_entries")
     .select("*")
@@ -109,6 +113,7 @@ export async function POST(req: Request) {
   const version = (reportCount ?? 0) + 1;
   const title = `Relationship Intelligence Report v${version}`;
 
+  // Build prompt with memory context
   const systemPrompt = `
 You are a high-precision relationship intelligence analyst.
 
@@ -127,6 +132,9 @@ STRICT RULES:
 - Always include missing information
 - Do NOT give emotional advice
 - Stay analytical and structured
+
+MEMORY CONTEXT:
+${JSON.stringify(memorySummary, null, 2)}
 
 Return valid JSON only.
 `;
@@ -269,6 +277,24 @@ Return JSON with exactly this shape:
 
     const report = safeParseReport(response.output_text);
 
+    // Create compressed memory update
+    const memoryUpdate = {
+      version: version,
+      executiveSummary: report.executiveSummary,
+      keyScores: report.scores,
+      redFlags: report.redFlags.slice(0, 3),
+      greenFlags: report.greenFlags.slice(0, 3),
+      nextSteps: report.nextSteps.slice(0, 3),
+      timestamp: new Date().toISOString(),
+    };
+
+    // Update memory summary
+    const updatedMemory = {
+      ...memorySummary,
+      ...memoryUpdate,
+    };
+
+    // Save report
     const { data, error } = await supabase
       .from("reports")
       .insert({
@@ -285,6 +311,13 @@ Return JSON with exactly this shape:
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
+
+    // Update case file memory
+    await supabase
+      .from("case_files")
+      .update({ memory_summary: updatedMemory })
+      .eq("id", caseFileId)
+      .single();
 
     return NextResponse.json({ reportId: data.id });
   } catch (err: any) {
