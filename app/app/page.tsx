@@ -81,6 +81,14 @@ export default async function AppDashboardPage() {
               >
                 View Reports
               </Link>
+              <form action="/api/checkout" method="post">
+                <button
+                  type="submit"
+                  className="rounded-full bg-white px-5 py-3 text-sm font-medium text-black"
+                >
+                  Upgrade
+                </button>
+              </form>
             </div>
           </div>
 
