@@ -99,6 +99,16 @@ export async function POST(req: Request) {
       created_at: e.created_at,
     })) ?? [];
 
+  // Count existing reports for versioning
+  const { count: reportCount } = await supabase
+    .from("reports")
+    .select("*", { count: "exact", head: true })
+    .eq("case_file_id", caseFileId)
+    .eq("user_id", user.id);
+
+  const version = reportCount + 1;
+  const title = `Relationship Intelligence Report v${version}`;
+
   const systemPrompt = `
 You are a high-precision relationship intelligence analyst.
 
@@ -264,7 +274,7 @@ Return JSON with exactly this shape:
       .insert({
         case_file_id: caseFileId,
         user_id: user.id,
-        title: "Relationship Intelligence Report",
+        title: title,
         summary: report.executiveSummary,
         overall_score: report.overallScore,
         report_json: report,
