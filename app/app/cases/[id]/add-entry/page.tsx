@@ -69,6 +69,30 @@ export default function AddEntryPage() {
             required
           />
 
+          <button
+            type="button"
+            className="w-full rounded-full bg-zinc-800 px-5 py-3 text-sm font-medium text-white border border-white/10 hover:bg-zinc-700 transition"
+            onClick={async () => {
+              if (!content.trim()) return;
+              const res = await fetch("/api/analyze-message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: content }),
+              });
+              const data = await res.json();
+              if (data && !data.error) {
+                alert(
+                  `Tone: ${data.tone}\nIntent: ${data.intent}\nEmotional State: ${data.emotionalState}\n\nSuggested Replies:\n- Neutral: ${data.suggestedReplies?.neutral}\n- Confident: ${data.suggestedReplies?.confident}\n- Assertive: ${data.suggestedReplies?.assertive}`
+                );
+              } else {
+                alert("Could not analyze message.");
+              }
+            }}
+            style={{ marginTop: 8, marginBottom: 8 }}
+          >
+            Analyze with AI
+          </button>
+
           <button className="w-full rounded-full bg-white px-5 py-3 text-sm font-medium text-black">
             Save entry
           </button>
