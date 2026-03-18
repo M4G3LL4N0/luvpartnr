@@ -92,7 +92,7 @@ export default async function AppDashboardPage() {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
               <div className="text-sm text-zinc-400">Case Files</div>
               <div className="mt-2 text-3xl font-semibold">{caseFiles?.length ?? 0}</div>
@@ -103,7 +103,9 @@ export default async function AppDashboardPage() {
             </div>
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
               <div className="text-sm text-zinc-400">Status</div>
-              <div className="mt-2 text-lg font-semibold">Authenticated</div>
+              <div className="mt-2 text-lg font-semibold">
+                {caseFiles?.length > 0 ? caseFiles[0].alert_level || 'low' : 'low'}
+              </div>
             </div>
           </div>
 
