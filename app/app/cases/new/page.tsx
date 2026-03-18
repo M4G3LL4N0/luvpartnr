@@ -10,7 +10,7 @@ export default function NewCasePage() {
 
   const [title, setTitle] = useState("");
   const [subjectName, setSubjectName] = useState("");
-  const [relationshipStage, setRelationshipStage] = useState("");
+  const [relationshipType, setRelationshipType] = useState("");
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
@@ -30,7 +30,7 @@ export default function NewCasePage() {
       user_id: user.id,
       title,
       subject_name: subjectName,
-      relationship_stage: relationshipStage,
+      relationship_type: relationshipType,
     });
 
     if (error) {
@@ -62,12 +62,18 @@ export default function NewCasePage() {
             value={subjectName}
             onChange={(e) => setSubjectName(e.target.value)}
           />
-          <input
+          <select
             className="w-full rounded-2xl border border-white/10 bg-black px-4 py-3"
-            placeholder="Relationship stage"
-            value={relationshipStage}
-            onChange={(e) => setRelationshipStage(e.target.value)}
-          />
+            value={relationshipType}
+            onChange={(e) => setRelationshipType(e.target.value)}
+            required
+          >
+            <option value="">Select relationship type</option>
+            <option value="dating">Dating</option>
+            <option value="friendship">Friendship</option>
+            <option value="work">Work</option>
+            <option value="family">Family</option>
+          </select>
 
           <button className="w-full rounded-full bg-white px-5 py-3 text-sm font-medium text-black">
             Create case file
