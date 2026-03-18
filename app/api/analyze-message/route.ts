@@ -15,35 +15,53 @@ export async function POST(req: Request) {
   const systemPrompt = `
 You are a high-level human communication analyst.
 
-Analyze the message with precision.
+Analyze the following message with precision.
 
-Return:
-- tone (concise)
-- intent (what they actually want)
-- emotionalState
-- riskLevel (low, medium, high)
-- hiddenSignals (bullet points)
-- suggestedResponses (3 options: neutral, confident, assertive)
+Return a JSON object with these fields:
+- tone: concise string
+- intent: concise string (what they actually want)
+- emotionalState: concise string
+- riskLevel: "low" | "medium" | "high"
+- hiddenSignals: array of concise bullet points
+- suggestedReplies: object with 3 fields:
+    - neutral: string (realistic, human, copy-paste ready, matches situation, avoids cringe/over-explaining)
+    - confident: string (realistic, human, copy-paste ready, matches situation, avoids cringe/over-explaining)
+    - assertive: string (realistic, human, copy-paste ready, matches situation, avoids cringe/over-explaining)
 
 Rules:
-- no fluff
-- no emotional coaching language
-- analytical, clear, grounded
+- No fluff
+- No emotional coaching language
+- Analytical, clear, grounded
+- Replies must be realistic, human, and copy-paste ready
+- Replies must match the tone of the situation
+- Avoid cringe, over-explaining, or generic advice
+- Output only valid JSON, no markdown or commentary
 `;
 
   try {
-    const response = await openai.responses.create({
-      model: "gpt-4.1",
+    const response = await openai.chat.completions.create({
+      model: "gpt-4-1106-preview",
       temperature: 0.4,
-      input: [
+      messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: message },
       ],
     });
 
-    return NextResponse.json({
-      result: response.output_text,
-    });
+    // Try to parse the JSON from the model's response
+    let result = null;
+    const content = response.choices[0]?.message?.content ?? "";
+    try {
+      result = JSON.parse(content);
+    } catch (e) {
+      // fallback: return as text if parsing fails
+      return NextResponse.json({
+        error: "Failed to parse model response as JSON",
+        raw: content,
+      }, { status: 500 });
+    }
+
+    return NextResponse.json(result);
   } catch (err: any) {
     return NextResponse.json(
       { error: err.message || "Failed" },
