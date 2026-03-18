@@ -338,8 +338,8 @@ Return JSON with exactly this shape:
       
       // Merge tags (case-insensitive deduplication)
       const mergedTags = [...new Set([
-        ...currentTags.map(t => t.toLowerCase()),
-        ...newTags.map(t => t.toLowerCase())
+        ...currentTags.map((t: string) => t.toLowerCase()),
+        ...newTags.map((t: string) => t.toLowerCase())
       ])];
 
       // Update entry
