@@ -104,7 +104,7 @@ export default async function AppDashboardPage() {
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
               <div className="text-sm text-zinc-400">Status</div>
               <div className="mt-2 text-lg font-semibold">
-                {caseFiles?.length > 0 ? caseFiles[0].alert_level || 'low' : 'low'}
+                {(caseFiles && caseFiles.length > 0) ? (caseFiles[0]?.alert_level || 'low') : 'low'}
               </div>
             </div>
           </div>
