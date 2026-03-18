@@ -38,6 +38,24 @@ export default function AddEntryPage() {
       return;
     }
 
+    // Fire-and-forget: analyze entry in background, do not block UI
+    (async () => {
+      try {
+        await fetch("/api/analyze-entry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            caseFileId: params.id,
+            entryType,
+            content,
+            userId: user.id,
+          }),
+        });
+      } catch (e) {
+        // Silently ignore errors
+      }
+    })();
+
     router.push(`/app/cases/${params.id}`);
     router.refresh();
   }
