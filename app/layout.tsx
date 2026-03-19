@@ -42,6 +42,7 @@ export default function RootLayout({
               <NavLink href="/investor">Investor</NavLink>
               <NavLink href="/sample-report">Sample Report</NavLink>
               <NavLink href="/insights">Insights</NavLink>
+              <NavLink href="/profile-insights">Profile Insights</NavLink>
               <NavLink href="/privacy">Privacy</NavLink>
               <NavLink href="#">Terms</NavLink>
               <NavLink href="/app">App</NavLink>
