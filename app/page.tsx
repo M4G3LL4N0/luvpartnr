@@ -14,7 +14,7 @@ export default function HomePage() {
         {/* Hero */}
         <section className="text-center">
           <h1 className="mt-12 text-4xl md:text-5xl font-bold tracking-tight">
-            Understand People Before You Commit
+            Understand the Relationship Before You Commit
           </h1>
           <p className="mt-4 text-lg text-zinc-400 max-w-2xl mx-auto">
             LUVPARTNR is a Relationship Intelligence System that analyzes interactions,

@@ -39,7 +39,7 @@ export default function ProductPage() {
 
         <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-400">
           LUVPARTNR helps users evaluate trust, compatibility, communication
-          patterns, and long-term partner potential through premium AI-assisted
+          patterns, and long-term relationship dynamics through premium AI-assisted
           analysis and ongoing private case tracking.
         </p>
 
