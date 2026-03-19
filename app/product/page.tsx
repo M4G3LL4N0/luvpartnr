@@ -27,30 +27,30 @@ export default function ProductPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-black px-6 py-24 text-white lg:px-8">
+    <main className="min-h-screen bg-black px-4 py-12 sm:px-6 lg:px-8 text-white">
       <div className="mx-auto max-w-6xl">
         <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
           Product
         </div>
 
-        <h1 className="mt-4 text-5xl font-semibold tracking-tight">
+        <h1 className="mt-4 text-3xl sm:text-5xl font-semibold tracking-tight">
           Private relationship intelligence, structured for clarity.
         </h1>
 
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-400">
+        <p className="mt-6 max-w-3xl text-base sm:text-lg leading-8 text-zinc-400">
           LUVPARTNR helps users evaluate trust, compatibility, communication
           patterns, and long-term relationship dynamics through premium AI-assisted
           analysis and ongoing private case tracking.
         </p>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-12 sm:mt-16 grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="rounded-3xl border border-white/10 bg-white/5 p-8"
+              className="rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8"
             >
-              <h2 className="text-2xl font-semibold">{feature.title}</h2>
-              <p className="mt-4 text-zinc-400">{feature.text}</p>
+              <h2 className="text-xl sm:text-2xl font-semibold">{feature.title}</h2>
+              <p className="mt-4 text-sm sm:text-base text-zinc-400 leading-relaxed">{feature.text}</p>
             </div>
           ))}
         </div>
