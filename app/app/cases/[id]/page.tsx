@@ -68,7 +68,7 @@ export default async function CaseDetailPage({
             <h1 className="mt-4 text-4xl font-semibold">{caseFile.title}</h1>
             <p className="mt-3 text-zinc-400">
               {caseFile.subject_name || "Unnamed subject"} ·{" "}
-              {caseFile.relationship_stage || "Unspecified stage"}
+              <span className="text-white/80">{caseFile.relationship_type}</span>
             </p>
           </div>
 

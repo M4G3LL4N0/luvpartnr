@@ -67,7 +67,8 @@ export default async function CasesPage() {
                 <h2 className="text-2xl font-semibold">{item.title}</h2>
                 <p className="mt-2 text-zinc-400">
                   {item.subject_name || "Unnamed subject"} ·{" "}
-                  {item.relationship_stage || "Unspecified stage"}
+                  {item.relationship_stage || "Unspecified stage"} ·{" "}
+                  <span className="text-white/80">{item.relationship_type}</span>
                 </p>
               </Link>
             ))
