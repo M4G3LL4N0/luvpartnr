@@ -4,11 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function AppDashboardPage() {
   const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  const { data: { user }, } = await supabase.auth.getUser();
   if (!user) {
     redirect("/login");
   }
@@ -27,6 +23,11 @@ export default async function AppDashboardPage() {
     .order("created_at", { ascending: false })
     .limit(5);
 
+  // Route to onboarding if no case files exist
+  if (!caseFiles || caseFiles.length === 0) {
+    redirect("/onboarding");
+  }
+
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="grid min-h-screen md:grid-cols-[280px_1fr]">
@@ -38,13 +39,9 @@ export default async function AppDashboardPage() {
             </div>
             <div className="text-lg font-bold tracking-[0.1em]">LUVPARTNR</div>
           </div>
-          
           <div className="space-y-1">
             <div className="px-3 py-2 text-xs font-medium text-white/50 uppercase tracking-[0.15em] mb-2">Workspace</div>
-            <Link
-              href="/app"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-white text-sm font-medium border border-white/20"
-            >
+            <Link href="/app" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-white text-sm font-medium border border-white/20" >
               <div className="w-5 h-5 bg-white/20 rounded-lg flex items-center justify-center">
                 <span className="text-xs">📊</span>
               </div>
@@ -63,7 +60,6 @@ export default async function AppDashboardPage() {
               Reports
             </Link>
           </div>
-          
           <div className="mt-12 pt-8 border-t border-white/10">
             <div className="px-3 py-2 text-xs font-medium text-white/50 uppercase tracking-[0.15em] mb-2">Account</div>
             <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
@@ -81,7 +77,6 @@ export default async function AppDashboardPage() {
             </Link>
           </div>
         </aside>
-
         {/* Main Content */}
         <section className="p-8">
           {/* Enhanced Header */}
@@ -91,180 +86,144 @@ export default async function AppDashboardPage() {
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                 Welcome back
               </div>
-              <h1 className="mt-6 text-5xl font-bold tracking-tight">
-                Your Relationship Intelligence Hub
-              </h1>
-              <p className="mt-4 text-lg text-white/70 max-w-2xl">
-                Analyze communication patterns, assess compatibility, and make informed decisions about your relationships with AI-powered insights.
-              </p>
+              <h1 className="mt-6 text-5xl font-bold tracking-tight"> Your Relationship Intelligence Hub </h1>
+              <p className="mt-4 text-lg text-white/70 max-w-2xl"> Analyze communication patterns, assess compatibility, and make informed decisions about your relationships with AI-powered insights. </p>
             </div>
-
             {/* Premium CTAs */}
             <div className="flex flex-wrap gap-4">
-              <Link
-                href="/app/cases/new"
-                className="group relative overflow-hidden rounded-full bg-white px-7 py-4 text-sm font-semibold text-black transition-all hover:scale-105 hover:shadow-lg"
-              >
+              <Link href="/app/cases/new" className="group relative overflow-hidden rounded-full bg-white px-7 py-4 text-sm font-semibold text-black transition-all hover:scale-105 hover:shadow-lg" >
                 <span className="relative z-10">New Analysis</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
               </Link>
-              <Link
-                href="/app/reports"
-                className="rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white/80 hover:text-white hover:border-white/40 transition-all hover:shadow-lg"
-              >
+              <Link href="/app/reports" className="rounded-full border border-white/20 px-7 py-4 text-sm font-medium text-white/80 hover:text-white hover:border-white/40 transition-all hover:shadow-lg" >
                 View Reports
               </Link>
               <form action="/api/checkout" method="post">
-                <button
-                  type="submit"
-                  className="group relative overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-7 py-4 text-sm font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-                >
+                <button type="submit" className="group relative overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-7 py-4 text-sm font-semibold text-white transition-all hover:scale-105 hover:shadow-lg" >
                   <span className="relative z-10">Upgrade Pro</span>
                   <div className="absolute inset-0 bg-white/20 group-hover:bg-white/30 transition-opacity"></div>
                 </button>
               </form>
             </div>
-          </div>
-
-          {/* Enhanced Stats Grid */}
-          <div className="mt-16 grid gap-6 lg:grid-cols-3">
-            <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 transition-all hover:border-white/20 hover:shadow-xl">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-white/60">Case Files</div>
-                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-xs">
-                  📁
-                </div>
-              </div>
-              <div className="mt-4 text-4xl font-bold">{caseFiles?.length ?? 0}</div>
-              <div className="mt-1 text-xs text-white/50">Active analyses</div>
-            </div>
-            
-            <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 transition-all hover:border-white/20 hover:shadow-xl">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-white/60">Reports</div>
-                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-xs">
-                  📊
-                </div>
-              </div>
-              <div className="mt-4 text-4xl font-bold">{reports?.length ?? 0}</div>
-              <div className="mt-1 text-xs text-white/50">Generated insights</div>
-            </div>
-            
-            <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 transition-all hover:border-white/20 hover:shadow-xl">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-white/60">Alert Level</div>
-                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-xs">
-                  ⚠️
-                </div>
-              </div>
-              <div className="mt-4 text-4xl font-bold">
-                {(caseFiles && caseFiles.length > 0) ? (caseFiles[0]?.alert_level || 'low') : 'low'}
-              </div>
-              <div className="mt-1 text-xs text-white/50">Current status</div>
-            </div>
-          </div>
-
-          {/* Enhanced Recent Content */}
-          <div className="mt-20 grid gap-8 lg:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold">Recent Case Files</h2>
-                <Link href="/app/cases" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-                  View all →
-                </Link>
-              </div>
-
-              <div className="space-y-4">
-                {(caseFiles ?? []).length === 0 ? (
-                  <div className="text-center py-12 text-white/50">
-                    <div className="text-4xl mb-4">📋</div>
-                    <div className="text-lg font-medium mb-2">No case files yet</div>
-                    <div className="text-sm">Start your first analysis</div>
+            {/* Enhanced Stats Grid */}
+            <div className="mt-16 grid gap-6 lg:grid-cols-3">
+              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 transition-all hover:border-white/20 hover:shadow-xl">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-white/60">Case Files</div>
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-xs">
+                    📁
                   </div>
-                ) : (
-                  (caseFiles ?? []).map((item, index) => (
-                    <Link
-                      key={item.id}
-                      href={`/app/cases/${item.id}`}
-                      className="block group rounded-xl border border-white/10 bg-black/30 p-5 transition-all hover:border-white/20 hover:bg-white/5 hover:shadow-lg"
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="text-lg font-semibold group-hover:text-white transition-colors">
-                            {item.title}
-                          </div>
-                          <div className="mt-3 flex items-center gap-4 text-sm text-white/60">
-                            <span>{item.subject_name || "Unnamed subject"}</span>
-                            <span>·</span>
-                            <span>{item.relationship_stage || "Unspecified stage"}</span>
-                          </div>
-                        </div>
-                        <div className="ml-4 flex items-center gap-3">
-                          <div className={`w-3 h-3 rounded-full ${
-                            item.alert_level === 'high' ? 'bg-red-500' :
-                            item.alert_level === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
-                          }`}></div>
-                          <span className="text-xs text-white/50">
-                            {new Date(item.created_at).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))
-                )}
+                </div>
+                <div className="mt-4 text-4xl font-bold">{caseFiles?.length ?? 0}</div>
+                <div className="mt-1 text-xs text-white/50">Active analyses</div>
               </div>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold">Recent Reports</h2>
-                <Link href="/app/reports" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-                  View all →
-                </Link>
+              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 transition-all hover:border-white/20 hover:shadow-xl">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-white/60">Reports</div>
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-xs">
+                    📊                   </div>
+                </div>
+                <div className="mt-4 text-4xl font-bold">{reports?.length ?? 0}</div>
+                <div className="mt-1 text-xs text-white/50">Generated insights</div>
               </div>
-
-              <div className="space-y-4">
-                {(reports ?? []).length === 0 ? (
-                  <div className="text-center py-12 text-white/50">
-                    <div className="text-4xl mb-4">📈</div>
-                    <div className="text-lg font-medium mb-2">No reports yet</div>
-                    <div className="text-sm">Generate your first analysis</div>
+              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6 transition-all hover:border-white/20 hover:shadow-xl">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-white/60">Alert Level</div>
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-xs">
+                    ⚠️
                   </div>
-                ) : (
-                  (reports ?? []).map((report, index) => (
-                    <Link
-                      key={report.id}
-                      href={`/app/reports/${report.id}`}
-                      className="block group rounded-xl border border-white/10 bg-black/30 p-5 transition-all hover:border-white/20 hover:bg-white/5 hover:shadow-lg"
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="text-lg font-semibold group-hover:text-white transition-colors">
-                            {report.title}
-                          </div>
-                          <div className="mt-3 text-sm text-white/60">
-                            {report.summary || "AI-generated relationship analysis"}
-                          </div>
-                        </div>
-                        <div className="ml-4 flex flex-col items-end gap-3">
-                          <div className="text-xs uppercase tracking-[0.1em] text-white/50">
-                            Score
-                          </div>
-                          <div className="text-3xl font-bold">
-                            {report.overall_score ?? "—"}
-                          </div>
-                          <div className="text-xs text-white/50">
-                            {new Date(report.created_at).toLocaleDateString()}
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  ))
-                )}
+                </div>
+                <div className="mt-4 text-4xl font-bold"> {(caseFiles && caseFiles.length > 0) ? (caseFiles[0]?.alert_level || 'low') : 'low'} </div>
+                <div className="mt-1 text-xs text-white/50">Current status</div>
               </div>
             </div>
-          </div>
-        </section>
+            {/* Enhanced Recent Content */}
+            <div className="mt-20 grid gap-8 lg:grid-cols-2">
+              <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl font-bold">Recent Case Files</h2>
+                  <Link href="/app/cases" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
+                    View all →                  </Link>
+                </div>
+                <div className="space-y-4">
+                  {(caseFiles ?? []).length === 0 ? (
+                    <div className="text-center py-12 text-white/50">
+                      <div className="text-4xl mb-4">📋</div>
+                      <div className="text-lg font-medium mb-2">No case files yet</div>
+                      <div className="text-sm">Start your first analysis</div>
+                    </div>
+                  ) : (
+                    (caseFiles ?? []).map((item, index) => (
+                      <Link key={item.id} href={`/app/cases/${item.id}`} className="block group rounded-xl border border-white/10 bg-black/30 p-5 transition-all hover:border-white/20 hover:bg-white/5 hover:shadow-lg">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="text-lg font-semibold group-hover:text-white transition-colors">
+                              {item.title}
+                            </div>
+                            <div className="mt-3 flex items-center gap-4 text-sm text-white/60">
+                              <span>{item.subject_name || "Unnamed subject"}</span>
+                              <span>·</span>
+                              <span>{item.relationship_stage || "Unspecified stage"}</span>
+                            </div>
+                          </div>
+                          <div className="ml-4 flex items-center gap-3">
+                            <div className={`w-3 h-3 rounded-full ${ item.alert_level === 'high' ? 'bg-red-500' : item.alert_level === 'medium' ? 'bg-yellow-500' : 'bg-green-500' }`}></div>
+                            <span className="text-xs text-white/50">
+                              {new Date(item.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                </div>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/2 p-6">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl font-bold">Recent Reports</h2>
+                  <Link href="/app/reports" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
+                    View all →
+                  </Link>
+                </div>
+                <div className="space-y-4">
+                  {(reports ?? []).length === 0 ? (
+                    <div className="text-center py-12 text-white/50">
+                      <div className="text-4xl mb-4">📈</div>
+                      <div className="text-lg font-medium mb-2">No reports yet</div>
+                      <div className="text-sm">Generate your first analysis</div>
+                    </div>
+                  ) : (
+                    (reports ?? []).map((report, index) => (
+                      <Link key={report.id} href={`/app/reports/${report.id}`} className="block group rounded-xl border border-white/10 bg-black/30 p-5 transition-all hover:border-white/20 hover:bg-white/5 hover:shadow-lg">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="text-lg font-semibold group-hover:text-white transition-colors">
+                              {report.title}
+                            </div>
+                            <div className="mt-3 text-sm text-white/60">
+                              {report.summary || "AI-generated relationship analysis"}
+                            </div>
+                          </div>
+                          <div className="ml-4 flex flex-col items-end gap-3">
+                            <div className="text-xs uppercase tracking-[0.1em] text-white/50">
+                              Score
+                            </div>
+                            <div className="text-3xl font-bold">
+                              {report.overall_score ?? "—"}
+                            </div>
+                            <div className="text-xs text-white/50">
+                              {new Date(report.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </main>
   );
