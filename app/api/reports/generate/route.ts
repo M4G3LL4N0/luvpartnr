@@ -1,4 +1,4 @@
-import { createSupabaseClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 type ReportSchema = {
@@ -46,7 +46,7 @@ function safeParseReport(text: string): ReportSchema {
 }
 
 export async function POST(req: Request) {
-  const supabase = await createSupabaseClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
