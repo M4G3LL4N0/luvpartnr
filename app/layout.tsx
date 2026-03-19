@@ -41,7 +41,9 @@ export default function RootLayout({
               <NavLink href="/pricing">Pricing</NavLink>
               <NavLink href="/investor">Investor</NavLink>
               <NavLink href="/sample-report">Sample Report</NavLink>
+              <NavLink href="/insights">Insights</NavLink>
               <NavLink href="/privacy">Privacy</NavLink>
+              <NavLink href="#">Terms</NavLink>
               <NavLink href="/app">App</NavLink>
             </nav>
           </div>
@@ -50,7 +52,7 @@ export default function RootLayout({
         {children}
 
         <footer className="border-t border-white/10">
-          <div className="mx-auto flex max-w-7xl flex-col gap-12 px-6 py-16 text-sm text-white/70 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          <div className="mx-auto flex max-w-7xl flex-col gap-12 px-6 py-16 text-sm text-white/70 lg:flex-col lg:items-center lg:justify-between lg:px-8">
             <div className="max-w-xl">
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
