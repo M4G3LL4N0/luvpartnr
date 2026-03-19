@@ -1,0 +1,6 @@
+{
+  strengths: string[];
+  weaknesses: string[];
+  patterns: string[];
+  risks: string[];
+}
