@@ -47,6 +47,15 @@ export default function GenerateReportButton({
     }
   }
 
+  const handleUpgrade = async () => {
+    // Create a form to POST to checkout endpoint
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/api/checkout";
+    document.body.appendChild(form);
+    form.submit();
+  };
+
   return (
     <div className="relative">
       <button
@@ -64,24 +73,24 @@ export default function GenerateReportButton({
         </div>
       )}
 
-      {/* Paywall overlay */}
+      {/* Paywall modal */}
       {showPaywall && (
-        <div className="absolute top-8 left-0 right-0 z-10 bg-white rounded-lg shadow-lg p-4 text-black">
-          <div className="text-center">
-            <h3 className="font-semibold mb-2">Upgrade Required</h3>
-            <p className="text-sm mb-3">
-              You've reached your monthly report generation limit. Upgrade to generate unlimited reports.
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h3 className="font-semibold mb-2 text-center">Unlock Full Intelligence</h3>
+            <p className="text-sm mb-6 text-center">
+              Get unlimited reports and deeper insights
             </p>
-            <div className="flex gap-2 justify-center">
+            <div className="space-y-3">
               <button
-                onClick={() => router.push("/pricing")}
-                className="rounded-full bg-black text-white px-4 py-2 text-sm font-medium"
+                onClick={handleUpgrade}
+                className="w-full rounded-full bg-black text-white px-4 py-2 text-sm font-medium"
               >
-                Upgrade Now
+                Upgrade
               </button>
               <button
                 onClick={() => setShowPaywall(false)}
-                className="rounded-full bg-gray-200 text-black px-4 py-2 text-sm font-medium"
+                className="w-full rounded-full bg-gray-200 text-black px-4 py-2 text-sm font-medium"
               >
                 Maybe Later
               </button>
