@@ -60,20 +60,29 @@ export default function AnalyzePage() {
     setLoading(true);
     setResult(null);
 
-    const res = await fetch("/api/analyze-message", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
+    try {
+      const res = await fetch("/api/analyze-message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
 
-    const data = await res.json();
-    setResult(data);
-    setLoading(false);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to analyze message");
+      }
+
+      setResult(data);
+    } catch (err) {
+      setResult({ error: err.message || "An unknown error occurred" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).catch(() => {
-      // Fallback if clipboard fails
       alert("Copy failed. Try again.");
     });
   };
