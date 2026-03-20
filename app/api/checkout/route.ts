@@ -1,21 +1,20 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 
-export async function POST(req) {
-  const { body } = await req.json();
-  
-  // Basic validation for production readiness
-  if (!body || !body.email || !body.plan) {
-    return NextResponse.json({ 
-      error: "Missing required fields (email and plan)", 
-      status: 400 
-    });
-  }
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-  // In production, this would integrate with payment gateway
-  // For now, simulate success with proper response structure
-  return NextResponse.json({
-    success: true,
-    message: "Subscription upgraded successfully!",
-    redirectUrl: "/app" // Redirect after upgrade
+export async function POST(_req: Request) {
+  const session = await stripe.checkout.sessions.create({
+    mode: "subscription",
+    line_items: [
+      {
+        price: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!,
+        quantity: 1,
+      },
+    ],
+    success_url: "http://localhost:3000/app",
+    cancel_url: "http://localhost:3000/app",
   });
+
+  return NextResponse.json({ url: session.url });
 }
