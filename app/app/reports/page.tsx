@@ -24,72 +24,33 @@ export default async function ReportsPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-white mb-2">Reports</h1>
-        <p className="text-gray-400 mb-8">View and manage your generated reports.</p>
+        <h1 className="text-4xl font-bold text-white mb-8 text-center">Reports</h1>
+        <p className="text-gray-400 mb-8 text-center">View and manage your generated reports.</p>
 
-        <div className="bg-gray-900/50 border border-white/10 rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-800">
-              <thead className="bg-gray-800">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Title
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Created
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Overall Score
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Case File
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-gray-900/30 divide-y divide-gray-800">
-                {reports?.map((report) => (
-                  <tr key={report.id} className="hover:bg-gray-800/50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
-                      {report.title}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                      {new Date(report.created_at).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      {typeof report.overall_score === 'number' ? report.overall_score.toFixed(1) : 'N/A'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      {report.case_file_id ? (
-                        <Link
-                          href={`/app/cases/${report.case_file_id}`}
-                          className="text-indigo-400 hover:text-indigo-300 transition-colors"
-                        >
-                          {report.case_file_id}
-                        </Link>
-                      ) : (
-                        '—'
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <Link
-                        href={`./${report.id}`}
-                        className="text-indigo-400 hover:text-indigo-300 transition-colors"
-                      >
-                        View Details
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {reports?.length === 0 && (
-            <div className="p-8 text-center text-gray-400">
-              No reports found. Create a report from a case file.
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {reports?.map((report) => (
+            <div key={report.id} className="bg-gray-900/50 border border-white/10 rounded-xl overflow-hidden shadow-lg hover:shadow-lg transition-shadow duration-300">
+              <div className="p-6">
+                <h2 className="text-2xl font-semibold mb-4">{report.title}</h2>
+                <p className="text-sm text-gray-400 mb-2">{new Date(report.created_at).toLocaleDateString()}</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="bg-white/10 rounded-full px-3 py-1 text-sm font-medium text-gray-400">{typeof report.overall_score === 'number' ? report.overall_score.toFixed(1) : 'N/A'}</div>
+                    <div className="ml-4 text-sm text-gray-400">Overall Score</div>
+                  </div>
+                  <div className="ml-4 text-sm text-gray-400">Case File</div>
+                </div>
+                <div className="flex items-center">
+                  <Link href={`/app/cases/${report.case_file_id}`} className="text-indigo-400 hover:text-indigo-300 transition-colors">{(report.case_file_id || '—')}</Link>
+                </div>
+              </div>
+              <div className="p-6">
+                <Link href={`./${report.id}`} className="text-indigo-400 hover:text-indigo-300 transition-colors text-lg font-medium">View Details</Link>
+              </div>
             </div>
+          ))}
+          {reports?.length === 0 && (
+            <div className="p-8 text-center text-gray-400">No reports found. Create a report from a case file.</div>
           )}
         </div>
       </div>
