@@ -98,19 +98,33 @@ export default async function CaseDetailPage({
               (entries ?? []).map((entry) => (
                 <div
                   key={entry.id}
-                  className="rounded-3xl border border-white/10 bg-black/30 p-6"
+                  className="rounded-3xl border border-white/10 bg-black/30 p-6 hover:bg-white/[0.03] transition-colors"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-sm uppercase tracking-[0.15em] text-zinc-400">
-                        {entry.entry_type}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex justify-between gap-4">
+                      <div>
+                        <div className="text-sm uppercase tracking-[0.15em] text-zinc-400">
+                          {entry.entry_type}
+                        </div>
+                        {entry.tags?.length > 0 && (
+                          <div className="mt-1 flex flex-wrap gap-2">
+                            {entry.tags.map((tag: string) => (
+                              <span 
+                                key={tag} 
+                                className="rounded-full border border-purple-400/20 bg-purple-400/10 px-2.5 py-1 text-xs text-purple-300"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <p className="mt-3 whitespace-pre-wrap text-zinc-300">
-                        {entry.content}
-                      </p>
-                    </div>
 
-                    <div className="flex shrink-0 gap-2">
+                    </div>
+                    <p className="whitespace-pre-wrap text-zinc-300">
+                      {entry.content}
+                    </p>
+                    <div className="flex shrink-0 gap-2 self-end">
                       <Link
                         href={`/app/cases/${id}/entries/${entry.id}/edit`}
                         className="rounded-full border border-white/15 px-4 py-2 text-xs text-white"
