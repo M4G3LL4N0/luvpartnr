@@ -45,10 +45,10 @@ export default function PricingPage() {
 
   return (
     <main className="min-h-screen bg-black px-4 py-12 sm:px-6 lg:px-8 text-white">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl px-4">
         <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">Pricing</div>
-        <h1 className="mt-4 text-3xl sm:text-5xl font-semibold tracking-tight">Transform Your Relationship Intelligence</h1>
-        <p className="mt-6 max-w-2xl text-base sm:text-lg text-zinc-400 leading-relaxed">
+        <h1 className="mt-4 text-2xl sm:text-5xl font-semibold tracking-tight">Transform Your Relationship Intelligence</h1>
+        <p className="mt-4 sm:mt-6 max-w-2xl text-sm sm:text-lg text-zinc-400 leading-relaxed">
           From basic insights to comprehensive behavioral analysis. Choose your level and unlock deeper understanding of relationship dynamics.
         </p>
 
@@ -66,7 +66,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <button className="mt-8 w-full rounded-full bg-white px-6 py-4 sm:py-3 text-sm sm:text-base font-semibold text-black transition hover:bg-zinc-200 min-h-[48px]">
+              <button className="mt-6 w-full rounded-full bg-white px-4 py-3 sm:py-3 text-sm sm:text-base font-semibold text-black transition hover:bg-zinc-200 min-h-[44px] touch-target">
                 Get Started
               </button>
             </div>

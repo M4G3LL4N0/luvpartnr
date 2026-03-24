@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-2xl px-4 py-8 sm:py-12 sm:px-6 lg:px-8">
         {/* Hero */}
         <section className="text-center">
           <h1 className="mt-8 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
@@ -24,7 +24,7 @@ export default function HomePage() {
 
         {/* Value Proposition */}
         <section className="mt-16 space-y-6 sm:mt-20 sm:space-y-8 md:grid md:grid-cols-2 md:gap-8">
-          <div className="bg-zinc-900/50 p-6 sm:p-8 rounded-xl backdrop-blur-sm">
+          <div className="bg-zinc-900/50 p-4 sm:p-8 rounded-xl backdrop-blur-sm">
             <div className="text-center">
               <div className="text-white text-4xl sm:text-5xl font-bold">Analyze Interactions</div>
               <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">Deep analysis of communication patterns and relational dynamics.</p>

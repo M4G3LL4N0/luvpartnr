@@ -30,7 +30,7 @@ export default async function AppDashboardPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="grid min-h-screen md:grid-cols-[260px_1fr]">
-        <aside className="border-r border-white/10 p-6">
+        <aside className="border-b md:border-r border-white/10 p-4 md:p-6">
           <div className="text-sm font-semibold tracking-[0.25em]">LUVPARTNR</div>
           <div className="mt-4 text-sm text-zinc-400">{user.email}</div>
 
@@ -50,7 +50,7 @@ export default async function AppDashboardPage() {
           </nav>
         </aside>
 
-        <section className="p-8">
+        <section className="p-4 sm:p-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
