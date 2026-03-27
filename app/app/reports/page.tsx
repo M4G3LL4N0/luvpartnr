@@ -22,10 +22,14 @@ export default async function ReportsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="relative isolate px-6 pt-14 lg:px-8">
-        {/* Premium header */}
-        <div className="border-b border-white/10 bg-gradient-to-b from-indigo-900/30 to-black pb-12 pt-24">
+    <main className="min-h-screen bg-black text-white">
+      <div className="grid min-h-screen md:grid-cols-[260px_1fr]">
+        <aside className="border-b md:border-r border-white/10 p-6 backdrop-blur-md">
+          {/* Same sidebar as dashboard */}
+        </aside>
+
+        <section className="p-6 sm:p-8 lg:p-10">
+          <header className="pb-10 border-b border-white/10">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">

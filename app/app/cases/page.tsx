@@ -29,9 +29,15 @@ export default async function CasesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-black px-6 py-20 text-white">
-      <div className="mx-auto max-w-5xl">
-        <div className="flex items-center justify-between gap-4">
+    <main className="min-h-screen bg-black text-white">
+      <div className="grid min-h-screen md:grid-cols-[260px_1fr]">
+        <aside className="border-b md:border-r border-white/10 p-6 backdrop-blur-md">
+          {/* Same sidebar as dashboard */}
+        </aside>
+
+        <section className="p-6 sm:p-8 lg:p-10">
+          <header className="pb-10 border-b border-white/10">
+            <div className="flex items-center justify-between gap-4">
           <div>
             <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
               Case files

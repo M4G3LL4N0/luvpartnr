@@ -30,42 +30,61 @@ export default async function AppDashboardPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="grid min-h-screen md:grid-cols-[260px_1fr]">
-        <aside className="border-b md:border-r border-white/10 p-4 md:p-6">
-          <div className="text-sm font-semibold tracking-[0.25em]">LUVPARTNR</div>
-          <div className="mt-4 text-sm text-zinc-400">{user.email}</div>
+        <aside className="border-b md:border-r border-white/10 p-6 backdrop-blur-md">
+          <div className="text-sm font-medium tracking-[0.25em]">LUVPARTNR</div>
+          <div className="mt-3 text-sm text-zinc-400">{user.email}</div>
 
-          <nav className="mt-10 space-y-3 text-sm text-zinc-400">
-            <Link href="/app" className="block rounded-xl bg-white/10 px-3 py-2 text-white">
-              Dashboard
+          <nav className="mt-10 space-y-1 text-sm">
+            <Link 
+              href="/app" 
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-white bg-white/10"
+            >
+              <span className="opacity-80">⌂</span>
+              <span>Dashboard</span>
             </Link>
-            <Link href="/app/cases" className="block px-3 py-2 hover:text-white">
-              Case Files
+            <Link 
+              href="/app/cases" 
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-zinc-400 hover:text-white hover:bg-white/[0.03] transition-colors"
+            >
+              <span className="opacity-80">🗂</span>
+              <span>Case Files</span>
             </Link>
-            <Link href="/app/reports" className="block px-3 py-2 hover:text-white">
-              Reports
+            <Link 
+              href="/app/reports" 
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-zinc-400 hover:text-white hover:bg-white/[0.03] transition-colors"
+            >
+              <span className="opacity-80">📊</span>
+              <span>Reports</span>
             </Link>
-            <Link href="/logout" className="block px-3 py-2 hover:text-white">
-              Logout
-            </Link>
+            <div className="pt-6 mt-6 border-t border-white/10">
+              <Link 
+                href="/logout" 
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-zinc-400 hover:text-white transition-colors"
+              >
+                <span className="opacity-80">⇥</span>
+                <span>Logout</span>
+              </Link>
+            </div>
+          </nav>
           </nav>
         </aside>
 
-        <section className="p-4 sm:p-8">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
-                Dashboard
+        <section className="p-6 sm:p-8 lg:p-10">
+          <header className="pb-10 border-b border-white/10">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+                  Dashboard
+                </div>
+                <h1 className="mt-2 text-3xl sm:text-4xl font-medium tracking-tight">
+                  Relationship Intelligence
+                </h1>
+                <p className="mt-2 max-w-2xl text-zinc-400">
+                  Structured insights from your case files and reports
+                </p>
               </div>
-              <h1 className="mt-3 text-4xl font-semibold tracking-tight">
-                Your private relationship intelligence workspace
-              </h1>
-              <p className="mt-3 max-w-2xl text-zinc-400">
-                Manage case files, review reports, and keep a structured record of
-                relationship events, signals, and decisions.
-              </p>
-            </div>
 
-            <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2">
               <Link
                 href="/app/cases/new"
                 className="rounded-full bg-white px-5 py-3 text-sm font-medium text-black"
