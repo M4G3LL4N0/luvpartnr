@@ -6,29 +6,64 @@ export default function SampleReportPage() {
         <h1 className="mt-4 text-5xl font-semibold tracking-tight">Structured relationship intelligence, at a glance.</h1>
 
         <div className="mt-12 space-y-6">
-          <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
-            <h2 className="text-2xl font-semibold">Executive summary</h2>
-            <p className="mt-4 text-zinc-400">
-              Strong emotional interest is present, but consistency and accountability remain under-proven. Current evidence supports caution before deeper commitment.
-            </p>
-          </section>
-
-          <section className="grid gap-6 md:grid-cols-2">
+          <section className="grid gap-8 md:grid-cols-2">
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
-              <h2 className="text-2xl font-semibold">Red flags</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold">Risk Indicators</h2>
+                <div className="text-sm text-zinc-400">Severity: Moderate</div>
+              </div>
               <ul className="mt-4 space-y-3 text-zinc-400">
-                <li>• warmth-to-distance shifts</li>
-                <li>• limited accountability after conflict</li>
-                <li>• inconsistent follow-through</li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <div>
+                    <div className="font-medium">Warmth-to-Distance Shifts</div>
+                    <div className="text-xs text-zinc-500">Pattern observed in 3/5 conflicts</div>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <div>
+                    <div className="font-medium">Accountability Gaps</div>
+                    <div className="text-xs text-zinc-500">Limited evidence of conflict resolution</div>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <div>
+                    <div className="font-medium">Inconsistent Follow-Through</div>
+                    <div className="text-xs text-zinc-500">35% of commitments unfulfilled</div>
+                  </div>
+                </li>
               </ul>
             </div>
 
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
-              <h2 className="text-2xl font-semibold">Green flags</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold">Positive Indicators</h2>
+                <div className="text-sm text-zinc-400">Strength: Moderate</div>
+              </div>
               <ul className="mt-4 space-y-3 text-zinc-400">
-                <li>• genuine emotional warmth</li>
-                <li>• some evidence of empathy</li>
-                <li>• positive engagement when stable</li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <div>
+                    <div className="font-medium">Emotional Warmth</div>
+                    <div className="text-xs text-zinc-500">Consistent in stable periods</div>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <div>
+                    <div className="font-medium">Empathy Signals</div>
+                    <div className="text-xs text-zinc-500">Present in 60% of interactions</div>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <div>
+                    <div className="font-medium">Positive Engagement</div>
+                    <div className="text-xs text-zinc-500">Strong during stable interactions</div>
+                  </div>
+                </li>
               </ul>
             </div>
           </section>
