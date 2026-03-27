@@ -44,6 +44,36 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Social Proof Section */}
+        <section className="mt-16 sm:mt-20">
+          <div className="text-center">
+            <h2 className="text-xl sm:text-2xl font-semibold text-white">
+              Trusted by Strategic Thinkers
+            </h2>
+            <p className="mt-4 text-zinc-400 max-w-2xl mx-auto">
+              Professionals across industries use LUVPARTNR to make better relationship decisions
+            </p>
+          </div>
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="p-6 rounded-xl border border-white/10 bg-white/5">
+              <div className="text-2xl font-bold">95%</div>
+              <div className="text-sm text-zinc-400 mt-2">Accuracy</div>
+            </div>
+            <div className="p-6 rounded-xl border border-white/10 bg-white/5">
+              <div className="text-2xl font-bold">10k+</div>
+              <div className="text-sm text-zinc-400 mt-2">Insights Shared</div>
+            </div>
+            <div className="p-6 rounded-xl border border-white/10 bg-white/5">
+              <div className="text-2xl font-bold">92%</div>
+              <div className="text-sm text-zinc-400 mt-2">User Satisfaction</div>
+            </div>
+            <div className="p-6 rounded-xl border border-white/10 bg-white/5">
+              <div className="text-2xl font-bold">4.8/5</div>
+              <div className="text-sm text-zinc-400 mt-2">Rating</div>
+            </div>
+          </div>
+        </section>
+
         {/* Product Preview */}
         <section className="mt-16 sm:mt-20">
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 sm:p-12">

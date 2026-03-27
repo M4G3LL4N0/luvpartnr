@@ -60,6 +60,24 @@ export default async function ReportDetailPage({
         </div>
 
         <div className="mt-10 space-y-6">
+          {/* Share Insight Section */}
+          <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
+            <h2 className="text-2xl font-semibold">Share Key Insights</h2>
+            <p className="mt-4 text-zinc-300">
+              Found this analysis helpful? You can safely share key insights with trusted connections.
+            </p>
+            <div className="mt-6">
+              <button
+                onClick={() => navigator.clipboard.writeText(reportRow.summary || report.executiveSummary || '')}
+                className="w-full max-w-xs bg-white/10 hover:bg-white/20 transition-colors text-white font-medium py-3 px-6 rounded-lg"
+              >
+                Copy Summary to Share
+              </button>
+              <p className="mt-3 text-xs text-zinc-400">
+                Share responsibly - insights are most powerful when used thoughtfully
+              </p>
+            </div>
+          </section>
           <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
             <h2 className="text-2xl font-semibold">Executive summary</h2>
             <p className="mt-4 text-zinc-300">
