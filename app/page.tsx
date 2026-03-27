@@ -2,9 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "LUVPARTNR | Relationship Intelligence System",
+  title: "LUVPARTNR | The Operating System for High-Stakes Relationships",
   description:
-    "AI-powered relationship intelligence platform for compatibility assessment, risk analysis, and long-term decision-making. Navigate complex relationships with data-driven insights.",
+    "The world's first Relationship Intelligence Platform. Transform ambiguity into clarity with AI-powered insights for life's most important decisions.",
 };
 
 export default function HomePage() {
@@ -14,32 +14,32 @@ export default function HomePage() {
         {/* Hero */}
         <section className="text-center">
           <h1 className="mt-8 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-            Understand the Relationship Before You Commit
+            The Intelligence Layer for Life's Most Important Decisions
           </h1>
           <p className="mt-4 text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            LUVPARTNR is a Relationship Intelligence System that analyzes interactions,
-            detects patterns, and helps you avoid costly mistakes.
+            LUVPARTNR transforms relationship ambiguity into structured insight. 
+            Our AI-powered platform helps you navigate high-stakes decisions with clarity and confidence.
           </p>
         </section>
 
         {/* Value Proposition */}
-        <section className="mt-16 space-y-6 sm:mt-20 sm:space-y-8 md:grid md:grid-cols-2 md:gap-8">
-          <div className="bg-zinc-900/50 p-4 sm:p-8 rounded-xl backdrop-blur-sm">
+        <section className="mt-16 space-y-6 sm:mt-20 sm:space-y-8 md:grid md:grid-cols-3 md:gap-8">
+          <div className="bg-zinc-900/50 p-6 sm:p-8 rounded-xl backdrop-blur-sm">
             <div className="text-center">
-              <div className="text-white text-4xl sm:text-5xl font-bold">Analyze Interactions</div>
-              <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">Deep analysis of communication patterns and relational dynamics.</p>
+              <div className="text-white text-4xl sm:text-5xl font-bold">Clarity</div>
+              <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">Transform emotional ambiguity into structured insight.</p>
             </div>
           </div>
           <div className="bg-zinc-900/50 p-6 sm:p-8 rounded-xl backdrop-blur-sm">
             <div className="text-center">
-              <div className="text-white text-4xl sm:text-5xl font-bold">Detect Patterns</div>
-              <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">AI identifies hidden signals and behavioral trends.</p>
+              <div className="text-white text-4xl sm:text-5xl font-bold">Confidence</div>
+              <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">Make high-stakes decisions with AI-powered intelligence.</p>
             </div>
           </div>
           <div className="bg-zinc-900/50 p-6 sm:p-8 rounded-xl backdrop-blur-sm">
             <div className="text-center">
-              <div className="text-white text-4xl sm:text-5xl font-bold">Avoid Mistakes</div>
-              <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">Predict risks and receive actionable guidance.</p>
+              <div className="text-white text-4xl sm:text-5xl font-bold">Control</div>
+              <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">Navigate complex relationships with precision and foresight.</p>
             </div>
           </div>
         </section>

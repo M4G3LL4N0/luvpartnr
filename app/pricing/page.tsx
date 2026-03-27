@@ -1,45 +1,48 @@
 export default function PricingPage() {
   const tiers = [
     {
-      name: "Free",
+      name: "Explorer",
       price: "$0",
       features: [
-        "1 basic report per month",
-        "Single case file",
-        "Limited behavioral insights",
-        "Basic scoring metrics",
-        "Community support"
+        "1 Relationship Insight Report/month",
+        "Single Case File",
+        "Basic Compatibility Scoring",
+        "Limited Behavioral Analysis",
+        "Community Support"
       ],
-      description: "Perfect for trying out our platform"
+      description: "For those beginning their relationship intelligence journey"
     },
     {
-      name: "Pro",
-      price: "$29",
+      name: "Strategist",
+      price: "$49",
       features: [
-        "Unlimited reports",
-        "Unlimited case files",
-        "Advanced behavioral scoring",
-        "Emotional intelligence analysis",
-        "Relationship pattern tracking",
-        "Priority email support",
-        "Export to PDF"
+        "Unlimited Relationship Reports",
+        "Multiple Case Files",
+        "Advanced Behavioral Scoring",
+        "Emotional Intelligence Analysis",
+        "Pattern Recognition Engine",
+        "Risk Assessment Models",
+        "Priority Support",
+        "PDF & CSV Exports"
       ],
-      description: "For serious relationship analysis"
+      description: "For professionals managing complex relationship dynamics"
     },
     {
-      name: "Premium",
-      price: "$99",
+      name: "Enterprise",
+      price: "$199",
       features: [
-        "Everything in Pro",
-        "Scenario modeling & predictions",
-        "Evolving memory system",
-        "Multi-relationship tracking",
-        "API access",
-        "Custom report templates",
-        "Dedicated support",
-        "Early feature access"
+        "Everything in Strategist",
+        "Scenario Modeling & Predictions",
+        "Evolving Memory System",
+        "Multi-Relational Intelligence",
+        "API Access & Integrations",
+        "Custom Report Frameworks",
+        "Dedicated Success Manager",
+        "Early Access to New Features",
+        "Team Collaboration Tools",
+        "White Label Reporting"
       ],
-      description: "For professionals & power users"
+      description: "For organizations managing high-stakes relationships"
     },
   ];
 

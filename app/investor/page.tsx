@@ -1,20 +1,20 @@
 export default function InvestorPage() {
   const sections = [
     {
-      title: "Category thesis",
-      text: "LUVPARTNR is building the relationship intelligence category: premium AI software for private partner evaluation and long-term decision-support.",
+      title: "Category Creation",
+      text: "We're building the Relationship Intelligence category - a new software layer for high-stakes personal decisions. Starting with romantic relationships, expanding to broader relational intelligence.",
     },
     {
-      title: "Market wedge",
-      text: "Beachhead users are serious daters, reconciliation evaluators, and commitment-stage users making emotionally expensive decisions.",
+      title: "Market Expansion",
+      text: "Our wedge: serious daters and commitment-stage users. Expansion path: reconciliation evaluators, family dynamics, business partnerships, and high-stakes personal relationships.",
     },
     {
-      title: "Revenue model",
-      text: "Consumer subscriptions first, then premium reports, exports, comparison tools, and professional plans for coaches or therapists.",
+      title: "Revenue Model",
+      text: "Premium subscriptions first, then enterprise licenses, API access, white-label solutions, and professional tools for coaches, therapists, and mediators.",
     },
     {
-      title: "Long-term moat",
-      text: "A structured relationship ontology, recurring user workflows, longitudinal case data, and strong category branding create defensibility.",
+      title: "Competitive Moat",
+      text: "Our structured relationship ontology, longitudinal case data, evolving AI models, and category-defining brand create a durable competitive advantage.",
     },
   ];
 
