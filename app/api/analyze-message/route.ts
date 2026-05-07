@@ -1,82 +1,40 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
-
-const hasOpenAI = Boolean(process.env.OPENAI_API_KEY);
-const openai = hasOpenAI
-  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-  : null;
 
 export async function POST(req: Request) {
-  const { message } = await req.json();
-
-  if (!message) {
-    return NextResponse.json(
-      { error: "Message required" },
-      { status: 400 }
-    );
-  }
-
-  const systemPrompt = `
-You are a high-level human communication analyst.
-
-Analyze the following message with precision and return ONLY a JSON object that includes these fields:
-- tone: concise string (e.g., "neutral", "urgent", "apologetic")
-- intent: concise string (what they actually want, e.g., "request help", "express frustration")
-- emotionalState: concise string (e.g., "calm", "anxious", "angry")
-- riskLevel: "low" | "medium" | "high" (based on potential conflict/legal implications)
-- hiddenSignals: array of concise bullet points (e.g., "mentions legal terms", "uses all caps")
-- suggestedResponses: object with exactly three fields:
-    neutral: string (realistic, copy-paste ready, matches situation)
-    confident: string (direct but polite)
-    assertive: string (clear boundary-setting)
-
-Rules:
-- Output ONLY valid JSON, no markdown, no extra commentary
-- Keep each value short and actionable
-- Do not add any fields beyond those listed
-- Prioritize practicality over theoretical analysis
-`;
-
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4-1106-preview",
-      temperature: 0.3,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message },
-      ],
-    });
+    const body = await req.json();
+    const message = String(body.message || body.input || "").trim();
 
-    const content = response.choices[0]?.message?.content ?? "";
-    let parsed;
-    try {
-      parsed = JSON.parse(content);
-    } catch {
-      return NextResponse.json(
-        { error: "Failed to parse model output as JSON" },
-        { status: 500 }
-      );
+    if (!message) {
+      return NextResponse.json({ error: "Message required" }, { status: 400 });
     }
 
-    // Enforce required structure
-    const result = {
-      tone: parsed.tone || "neutral",
-      intent: parsed.intent || "general inquiry",
-      emotionalState: parsed.emotionalState || "neutral",
-      riskLevel: parsed.riskLevel || "low",
-      hiddenSignals: Array.isArray(parsed.hiddenSignals) ? parsed.hiddenSignals : [],
-      suggestedResponses: {
-        neutral: parsed.suggestedResponses?.neutral || "I'm here to help with this.",
-        confident: parsed.suggestedResponses?.confident || "Please clarify your request.",
-        assertive: parsed.suggestedResponses?.assertive || "I need specific details to proceed."
-      }
-    };
+    const lower = message.toLowerCase();
+    const riskLevel =
+      lower.includes("never") || lower.includes("done") || lower.includes("whatever")
+        ? "medium"
+        : lower.includes("sorry") || lower.includes("understand")
+          ? "low"
+          : "low";
 
-    return NextResponse.json(result);
-  } catch (err: any) {
-    return NextResponse.json(
-      { error: err.message || "Analysis failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      tone: "Measured and context-dependent",
+      intent: "The message may be expressing a need, boundary, reaction, or emotional signal. More context would improve confidence.",
+      emotionalState: "Unclear from one message alone",
+      riskLevel,
+      hiddenSignals: [
+        "Interpretation should stay cautious without more context.",
+        "Look for consistency between this message and repeated behavior.",
+        "Avoid over-reading one isolated text."
+      ],
+      suggestedResponses: {
+        neutral: "I hear you. Can you help me understand what you mean by that?",
+        confident: "I want to understand this clearly, so I’d rather talk directly than guess.",
+        assertive: "I’m open to talking, but I need clarity and consistency if we’re going to keep discussing this."
+      }
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
