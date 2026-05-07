@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "project_folder": "luvpartnr",
+  "startup_name": "LUVPARTNR",
+  "aliases": ["LuvPartnr", "Relationship Intelligence OS"],
+  "domain": "luvpartnr.vercel.app",
+  "category": "Relationship Intelligence OS",
+  "stage": "mvp",
+  "one_line_description": "Private AI relationship intelligence for organizing, analyzing, and understanding relationships over time.",
+  "target_users": [
+    "people dating someone new",
+    "people evaluating commitment",
+    "people navigating confusing romantic dynamics",
+    "people recovering from betrayal",
+    "people tracking friendships or social relationships",
+    "coaches or therapists using structured reflection"
+  ],
+  "core_problem": "People make high-stakes relationship decisions from scattered messages, emotion, bias, incomplete memory, and unstructured signals.",
+  "core_solution": "LUVPARTNR turns relationship information into structured case files, timeline entries, AI reports, message analysis, risk scoring, and long-term insight.",
+  "differentiation": "It separates facts from inferences, tracks relationships over time, creates persistent case memory, and focuses on serious decision-support rather than generic dating advice.",
+  "mvp_scope": {
+    "primary_goal": "A working authenticated app for creating case files, logging entries, generating AI relationship reports, viewing report history, and analyzing messages.",
+    "included_features": [
+      "auth",
+      "case files",
+      "timeline entries",
+      "AI report generation",
+      "report history",
+      "message analyzer",
+      "public report share page",
+      "pricing page",
+      "investor page",
+      "privacy/ethics page"
+    ],
+    "excluded_for_now": [
+      "native mobile app",
+      "direct Tinder/Match integrations",
+      "full social graph",
+      "clinical diagnosis",
+      "automated surveillance"
+    ],
+    "future_features": [
+      "relationship graph",
+      "friendship/work/family modes",
+      "cross-case insights",
+      "daily insights",
+      "Stripe production billing",
+      "shareable insight cards",
+      "mobile-first UX",
+      "SEO/blog growth"
+    ]
+  },
+  "website": {
+    "primary_message": "Understand people before you commit.",
+    "tone": "premium, private, analytical, serious, emotionally grounded",
+    "routes": [
+      "/",
+      "/product",
+      "/pricing",
+      "/investor",
+      "/sample-report",
+      "/privacy",
+      "/app",
+      "/app/cases",
+      "/app/reports",
+      "/app/analyze"
+    ],
+    "sections": [
+      "hero",
+      "problem",
+      "solution",
+      "how it works",
+      "product preview",
+      "sample report",
+      "privacy and ethics",
+      "pricing",
+      "investor narrative"
+    ],
+    "cta": "Start private relationship analysis",
+    "seo_keywords": [
+      "relationship intelligence",
+      "AI relationship analysis",
+      "dating decision support",
+      "compatibility analysis",
+      "communication analysis",
+      "relationship risk dashboard"
+    ]
+  },
+  "product": {
+    "core_flows": [
+      "create case file",
+      "add timeline entry",
+      "generate AI report",
+      "view report history",
+      "analyze message",
+      "share report summary"
+    ],
+    "demo_flows": [
+      "new user creates first case",
+      "user adds relationship event",
+      "user generates report",
+      "user opens report history"
+    ],
+    "data_model_notes": [
+      "case_files stores user-owned relationship files",
+      "case_entries stores timeline notes/events/messages",
+      "reports stores generated report_json",
+      "relationship_type expands beyond dating"
+    ],
+    "auth_required": true,
+    "database_required": true,
+    "api_required": true
+  },
+  "design_system": {
+    "visual_style": "premium dark SaaS, Apple-like, elegant, minimal, high contrast",
+    "colors": ["black", "zinc", "white", "subtle borders"],
+    "typography": "large confident headings, muted explanatory text",
+    "layout_principles": ["strong hierarchy", "rounded cards", "wide spacing", "mobile responsive"],
+    "animation_style": "minimal and subtle only",
+    "avoid": ["cheesy dating app style", "gossip aesthetic", "playful gimmicks", "generic SaaS filler"]
+  },
+  "technical_stack": {
+    "framework": "Next.js",
+    "language": "TypeScript",
+    "styling": "Tailwind CSS",
+    "package_manager": "pnpm",
+    "deployment": "Vercel",
+    "database": "Supabase",
+    "auth": "Supabase Auth",
+    "apis": ["OpenAI", "Stripe planned"]
+  },
+  "important_files": {
+    "routes": ["app/page.tsx", "app/app/page.tsx", "app/app/cases", "app/app/reports", "app/app/analyze"],
+    "components": [],
+    "lib": ["lib/supabase/client.ts", "lib/supabase/server.ts"],
+    "data": [],
+    "public_assets": [],
+    "config": ["package.json", "pnpm-lock.yaml", "next.config.mjs", "tsconfig.json", "postcss.config.mjs", "eslint.config.mjs"]
+  },
+  "preserve": {
+    "copy": ["Relationship Intelligence System", "Understand people before you commit"],
+    "features": ["case files", "timeline entries", "AI reports", "message analyzer", "report history"],
+    "components": ["report button", "dashboard", "case pages", "report pages"],
+    "assets": ["used public assets"],
+    "technical_decisions": ["Next.js App Router", "Supabase SSR", "OpenAI server-side routes", "pnpm"]
+  },
+  "do_not": {
+    "delete": ["source code", "env examples", "Autobuilder files", "Supabase clients", "report generation routes"],
+    "expose_publicly": ["API keys", "internal Autobuilder implementation", "private relationship data"],
+    "change_without_reason": ["brand name", "dark premium design", "server/client separation"],
+    "build": ["spying tools", "stalking tools", "lie detector claims", "clinical diagnosis claims"],
+    "drift_toward": ["generic SaaS", "therapy blog only", "dating entertainment app", "gossip product"]
+  },
+  "autobuilder_strategy": {
+    "north_star": "Make LUVPARTNR the private relationship intelligence system people use to understand relationships and make better decisions.",
+    "quality_bar": "Investor-ready, build-green, premium, non-generic, privacy-conscious.",
+    "next_priorities": [
+      "stabilize build",
+      "polish reports UI",
+      "harden AI generation",
+      "improve onboarding",
+      "finish Stripe/paywall",
+      "improve sharing and growth loops"
+    ],
+    "safe_improvement_types": ["UI polish", "copy clarity", "empty states", "type fixes", "safe route cleanup", "documentation"],
+    "unsafe_improvement_types": ["changing auth architecture", "deleting source folders", "adding fake functionality", "client-side secrets"],
+    "preferred_task_size": "small",
+    "build_frequency_guidance": "Run pnpm build after every focused change.",
+    "deployment_guidance": "manual_vercel_only"
+  },
+  "cleanup_policy": {
+    "safe_to_delete": ["node_modules", ".next", ".turbo", ".vercel/cache", "logs", ".DS_Store", "test-results", "playwright-report"],
+    "must_preserve": ["app", "lib", "public used assets", "package.json", "pnpm-lock.yaml", "config", ".env.local", ".env.example", "Autobuilder files"],
+    "large_file_review_paths": ["public", "assets", "media", "data", "docs", ".autobuilder"],
+    "post_build_cleanup_commands": ["rm -rf node_modules .next .turbo .vercel/cache"]
+  },
+  "last_recovery_summary": {
+    "date": "2026-05-06",
+    "restored": ["build-green Next.js configuration", "premium relationship intelligence positioning", "Autobuilder memory files"],
+    "improved": ["homepage", "pricing page", "investor page", "privacy page", "app dashboard", "case empty state", "reports empty state", "message analyzer UI", "public report page"],
+    "fixed": ["unsupported next.config.ts", "Tailwind/PostCSS plugin mismatch", "message analyzer endpoint mismatch", "add-entry analysis payload", "new-case loading state"],
+    "removed": ["corrupt generated tracked files", "root report-button.tsx", "package-lock.json", "prompt-text filenames"],
+    "remaining_risks": ["case and report list pages still need live Supabase list queries", "Stripe billing is not complete", "AI report output needs stronger schema enforcement"]
+  }
+}

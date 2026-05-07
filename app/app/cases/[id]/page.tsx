@@ -127,7 +127,7 @@ export default async function CaseDetailPage({
                     <div className="flex shrink-0 gap-2 self-end">
                       <Link
                         href={`/app/cases/${id}/entries/${entry.id}/edit`}
-                        className="rounded-full border border-white/15 px-4 py-2 text-xs text-white"
+                        className="rounded-full border border-white/15 px-4 py-2 text-xs text-white hover:bg-white/10 transition-colors"
                       >
                         Edit
                       </Link>

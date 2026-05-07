@@ -44,7 +44,26 @@ export default async function ReportDetailPage({
     redirect("/app/reports");
   }
 
-  const report = (reportRow.report_json ?? {}) as ReportJson;
+  function isReportJson(obj: unknown): obj is ReportJson {
+    const value = obj as Partial<ReportJson> | null;
+    return (
+      typeof obj === 'object' &&
+      value !== null &&
+      (value.executiveSummary === undefined || typeof value.executiveSummary === 'string') &&
+      (value.overallScore === undefined || typeof value.overallScore === 'number') &&
+      (value.scores === undefined || typeof value.scores === 'object') &&
+      (value.observedFacts === undefined || Array.isArray(value.observedFacts)) &&
+      (value.strongInferences === undefined || Array.isArray(value.strongInferences)) &&
+      (value.weakInferences === undefined || Array.isArray(value.weakInferences)) &&
+      (value.redFlags === undefined || Array.isArray(value.redFlags)) &&
+      (value.greenFlags === undefined || Array.isArray(value.greenFlags)) &&
+      (value.missingInformation === undefined || Array.isArray(value.missingInformation)) &&
+      (value.nextSteps === undefined || Array.isArray(value.nextSteps)) &&
+      (value.longTermOutlook === undefined || typeof value.longTermOutlook === 'object')
+    );
+  }
+
+  const report: ReportJson = isReportJson(reportRow.report_json) ? reportRow.report_json : {};
 
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white">
@@ -67,12 +86,9 @@ export default async function ReportDetailPage({
               Found this analysis helpful? You can safely share key insights with trusted connections.
             </p>
             <div className="mt-6">
-              <button
-                onClick={() => navigator.clipboard.writeText(reportRow.summary || report.executiveSummary || '')}
-                className="w-full max-w-xs bg-white/10 hover:bg-white/20 transition-colors text-white font-medium py-3 px-6 rounded-lg"
-              >
-                Copy Summary to Share
-              </button>
+              <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-black/30 p-4 text-sm leading-6 text-zinc-300">
+                {reportRow.summary || report.executiveSummary || "Shareable summary will appear here once the report is complete."}
+              </div>
               <p className="mt-3 text-xs text-zinc-400">
                 Share responsibly - insights are most powerful when used thoughtfully
               </p>
@@ -98,7 +114,7 @@ export default async function ReportDetailPage({
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
               <h2 className="text-2xl font-semibold">Observed facts</h2>
               <ul className="mt-4 space-y-3 text-zinc-300">
-                {(report.observedFacts ?? []).map((item) => (
+                {(report.observedFacts ?? []).map((item: string) => (
                   <li key={item}>• {item}</li>
                 ))}
               </ul>
@@ -107,7 +123,7 @@ export default async function ReportDetailPage({
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
               <h2 className="text-2xl font-semibold">Strong inferences</h2>
               <ul className="mt-4 space-y-3 text-zinc-300">
-                {(report.strongInferences ?? []).map((item) => (
+                {(report.strongInferences ?? []).map((item: string) => (
                   <li key={item}>• {item}</li>
                 ))}
               </ul>
@@ -118,7 +134,7 @@ export default async function ReportDetailPage({
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
               <h2 className="text-2xl font-semibold">Weak inferences</h2>
               <ul className="mt-4 space-y-3 text-zinc-300">
-                {(report.weakInferences ?? []).map((item) => (
+                {(report.weakInferences ?? []).map((item: string) => (
                   <li key={item}>• {item}</li>
                 ))}
               </ul>
@@ -127,7 +143,7 @@ export default async function ReportDetailPage({
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
               <h2 className="text-2xl font-semibold">Missing information</h2>
               <ul className="mt-4 space-y-3 text-zinc-300">
-                {(report.missingInformation ?? []).map((item) => (
+                {(report.missingInformation ?? []).map((item: string) => (
                   <li key={item}>• {item}</li>
                 ))}
               </ul>
@@ -138,7 +154,7 @@ export default async function ReportDetailPage({
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
               <h2 className="text-2xl font-semibold">Red flags</h2>
               <ul className="mt-4 space-y-3 text-zinc-300">
-                {(report.redFlags ?? []).map((item) => (
+                {(report.redFlags ?? []).map((item: string) => (
                   <li key={item}>• {item}</li>
                 ))}
               </ul>
@@ -147,7 +163,7 @@ export default async function ReportDetailPage({
             <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
               <h2 className="text-2xl font-semibold">Green flags</h2>
               <ul className="mt-4 space-y-3 text-zinc-300">
-                {(report.greenFlags ?? []).map((item) => (
+                {(report.greenFlags ?? []).map((item: string) => (
                   <li key={item}>• {item}</li>
                 ))}
               </ul>
@@ -157,7 +173,7 @@ export default async function ReportDetailPage({
           <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
             <h2 className="text-2xl font-semibold">Next steps</h2>
             <ul className="mt-4 space-y-3 text-zinc-300">
-              {(report.nextSteps ?? []).map((item) => (
+              {(report.nextSteps ?? []).map((item: string) => (
                 <li key={item}>• {item}</li>
               ))}
             </ul>

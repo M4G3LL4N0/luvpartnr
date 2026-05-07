@@ -1,7 +1,0 @@
-// Entire file content...
-import Link from 'next/link';
-const Link = ({ href, children, ...rest }) => (
-  <a href={href} {...rest}>
-    {children}
-  </a>
-);

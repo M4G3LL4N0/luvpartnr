@@ -1,5 +1,0 @@
-// Entire file content...
-export const deleteEntry = async (entryId, caseId) => {
-  const supabase = createClient();
-  await supabase.from('case_entries').delete().eq('id', entryId).eq('case_file_id', caseId);
-};

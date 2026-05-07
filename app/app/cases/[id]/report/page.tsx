@@ -148,9 +148,18 @@ export default async function CaseReportPage({
             <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
               <h2 className="text-2xl font-semibold">Long-term outlook</h2>
               <div className="mt-4 space-y-4 text-zinc-300">
-                <p><strong className="text-white">1 year:</strong> {report.longTermOutlook?.oneYear ?? "—"}</p>
-                <p><strong className="text-white">5 years:</strong> {report.longTermOutlook?.fiveYears ?? "—"}</p>
-                <p><strong className="text-white">20 years:</strong> {report.longTermOutlook?.twentyYears ?? "—"}</p>
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 text-white font-medium w-16">1 year:</div>
+                  <div>{report.longTermOutlook?.oneYear ?? "—"}</div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 text-white font-medium w-16">5 years:</div>
+                  <div>{report.longTermOutlook?.fiveYears ?? "—"}</div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 text-white font-medium w-16">20 years:</div>
+                  <div>{report.longTermOutlook?.twentyYears ?? "—"}</div>
+                </div>
               </div>
             </section>
           </div>

@@ -1,146 +1,85 @@
-export default function PricingPage() {
-  const tiers = [
-    {
-      name: "Explorer",
-      price: "$0",
-      features: [
-        "1 Relationship Insight Report/month",
-        "Single Case File",
-        "Basic Compatibility Scoring",
-        "Limited Behavioral Analysis",
-        "Community Support"
-      ],
-      description: "For those beginning their relationship intelligence journey"
-    },
-    {
-      name: "Strategist",
-      price: "$49",
-      features: [
-        "Unlimited Relationship Reports",
-        "Multiple Case Files",
-        "Advanced Behavioral Scoring",
-        "Emotional Intelligence Analysis",
-        "Pattern Recognition Engine",
-        "Risk Assessment Models",
-        "Priority Support",
-        "PDF & CSV Exports"
-      ],
-      description: "For professionals managing complex relationship dynamics"
-    },
-    {
-      name: "Enterprise",
-      price: "$199",
-      features: [
-        "Everything in Strategist",
-        "Scenario Modeling & Predictions",
-        "Evolving Memory System",
-        "Multi-Relational Intelligence",
-        "API Access & Integrations",
-        "Custom Report Frameworks",
-        "Dedicated Success Manager",
-        "Early Access to New Features",
-        "Team Collaboration Tools",
-        "White Label Reporting"
-      ],
-      description: "For organizations managing high-stakes relationships"
-    },
-  ];
+import Link from "next/link";
 
+const tiers = [
+  {
+    name: "Private",
+    price: "$19",
+    description: "For one person making clearer relationship decisions.",
+    features: ["3 active case files", "10 AI reports/month", "Message analyzer", "Private report history"],
+  },
+  {
+    name: "Strategist",
+    price: "$49",
+    description: "For users tracking multiple relationships or longer timelines.",
+    features: ["Unlimited case files", "Unlimited reports", "Advanced risk scoring", "Longitudinal memory"],
+    featured: true,
+  },
+  {
+    name: "Professional",
+    price: "$149",
+    description: "For coaches, therapists, mediators, and serious advisory use.",
+    features: ["Client-ready exports", "Structured reflection templates", "Priority support", "Future team tools"],
+  },
+];
+
+export default function PricingPage() {
   return (
-    <main className="min-h-screen bg-black px-4 py-12 sm:px-6 lg:px-8 text-white">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">Pricing</div>
-        <h1 className="mt-4 text-2xl sm:text-5xl font-semibold tracking-tight">Transform Your Relationship Intelligence</h1>
-        <p className="mt-4 sm:mt-6 max-w-2xl text-sm sm:text-lg text-zinc-400 leading-relaxed">
-          From basic insights to comprehensive behavioral analysis. Choose your level and unlock deeper understanding of relationship dynamics.
+    <main className="min-h-screen bg-black px-6 py-20 text-white lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <p className="text-xs uppercase tracking-[0.28em] text-white/45">Pricing</p>
+        <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
+          Relationship intelligence priced for serious decisions.
+        </h1>
+        <p className="mt-5 max-w-2xl text-white/65">
+          Start privately, upgrade when case memory, recurring reports, and
+          deeper analysis become part of your decision process.
         </p>
 
-        <div className="mt-12 space-y-6 sm:mt-16 sm:space-y-8 md:grid md:grid-cols-3 md:gap-8">
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
           {tiers.map((tier) => (
-            <div key={tier.name} className="rounded-3xl border border-white/10 bg-white/5 p-6 sm:p-8 hover:border-white/20 transition-all duration-300">
-              <div className="text-sm text-zinc-400 mb-2">{tier.name}</div>
-              <div className="text-3xl sm:text-4xl font-semibold mb-2">{tier.price}<span className="text-base text-zinc-400"> / month</span></div>
-              <p className="text-sm text-zinc-400 mb-6">{tier.description}</p>
-              <ul className="space-y-3 text-sm text-zinc-300">
+            <section
+              key={tier.name}
+              className={`rounded-2xl border p-6 ${
+                tier.featured ? "border-white/35 bg-white/[0.08]" : "border-white/10 bg-white/[0.04]"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold">{tier.name}</h2>
+                {tier.featured ? (
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black">
+                    Best fit
+                  </span>
+                ) : null}
+              </div>
+              <div className="mt-5 text-4xl font-semibold">
+                {tier.price}
+                <span className="text-base font-normal text-white/45"> / month</span>
+              </div>
+              <p className="mt-4 min-h-12 text-sm leading-6 text-white/60">{tier.description}</p>
+              <ul className="mt-6 space-y-3 text-sm text-white/70">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-start">
-                    <span className="text-green-400 mr-2 mt-0.5">✓</span>
-                    <span className="leading-relaxed">{feature}</span>
-                  </li>
+                  <li key={feature}>{feature}</li>
                 ))}
               </ul>
-              <button className="mt-6 w-full rounded-full bg-white px-4 py-3 sm:py-3 text-sm sm:text-base font-semibold text-black transition hover:bg-zinc-200 min-h-[44px] touch-target">
-                Get Started
-              </button>
-            </div>
+              <Link
+                href="/signup"
+                className={`mt-8 block rounded-full px-5 py-3 text-center text-sm font-semibold ${
+                  tier.featured ? "bg-white text-black" : "border border-white/15 text-white"
+                }`}
+              >
+                Start private analysis
+              </Link>
+            </section>
           ))}
         </div>
 
-        {/* Value Differentiation Section */}
-        <section className="mt-20 sm:mt-24 border-t border-zinc-800 pt-12 sm:pt-16">
-          <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Why Upgrade to Premium?</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
-              Our premium tiers deliver unmatched relationship intelligence that evolves with your needs
-            </p>
-            
-            <div className="mt-10 sm:mt-12 grid gap-6 sm:gap-8 md:grid-cols-3">
-              <div className="text-center">
-                <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center mb-4">
-                  <span className="text-xl">∞</span>
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-2">Unlimited Reports</h3>
-                <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">Analyze every interaction without limits. Build comprehensive behavioral profiles.</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 flex items-center justify-center mb-4">
-                  <span className="text-xl">🧠</span>
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-2">Deeper Intelligence</h3>
-                <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">Advanced emotional analysis and pattern recognition that goes beyond surface-level insights.</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-r from-green-600 to-emerald-600 flex items-center justify-center mb-4">
-                  <span className="text-xl">🔄</span>
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-2">Evolving Memory</h3>
-                <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">Our AI learns and adapts, providing increasingly accurate insights over time.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Early Access CTA Section */}
-        <section className="mt-20 sm:mt-32 border-t border-zinc-800 pt-12 sm:pt-20">
-          <div className="rounded-3xl border border-zinc-800 bg-gradient-to-b from-zinc-900 to-black p-6 sm:p-12 text-center">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl sm:text-3xl sm:text-5xl font-semibold tracking-tight">
-                Join Our Exclusive Early Access Program
-              </h2>
-              <p className="mt-6 text-base sm:text-lg leading-8 text-zinc-400">
-                Be among the first to experience LUVPARTNR's revolutionary relationship intelligence platform. Early access members receive exclusive benefits and priority support.
-              </p>
-              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center gap-4">
-                <a
-                  href="/early-access"
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 sm:px-8 py-4 sm:py-3 text-sm sm:text-base font-semibold text-white transition hover:from-purple-700 hover:to-pink-700 min-w-[200px]"
-                >
-                  Reserve Your Spot Now
-                </a>
-                <a
-                  href="/pricing"
-                  className="inline-flex items-center justify-center rounded-full border border-zinc-700 px-6 sm:px-8 py-4 sm:py-3 text-sm sm:text-base font-medium text-white transition hover:bg-zinc-900 min-w-[200px]"
-                >
-                  View All Features
-                </a>
-              </div>
-              <p className="mt-6 sm:mt-8 text-sm text-zinc-400">
-                Limited spots available - join now to secure your place in our exclusive early access program
-              </p>
-            </div>
-          </div>
+        <section className="mt-12 rounded-2xl border border-white/10 bg-zinc-950 p-6">
+          <h2 className="text-xl font-semibold">Trust boundary</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-white/60">
+            LUVPARTNR does not sell gossip, surveillance, lie detection, or
+            diagnosis. It sells structured private reasoning for people trying to
+            make better relationship decisions.
+          </p>
         </section>
       </div>
     </main>

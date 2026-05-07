@@ -18,12 +18,12 @@ export default function Dashboard() {
             <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-8 rounded-xl shadow-lg">
               <h2 className="text-3xl font-bold text-white mb-4">Upgrade to Premium</h2>
               <div className="flex items-center justify-center">
-                <button
+                <Link
+                  href="/api/checkout"
                   className="bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-xl text-white transition-colors hover:text-white hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  onClick={() => window.location.href = "/api/checkout"}
                 >
                   Upgrade Now
-                </button>
+                </Link>
               </div>
             </div>
           </div>

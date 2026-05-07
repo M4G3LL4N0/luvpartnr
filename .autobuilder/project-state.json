@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "project": "LUVPARTNR",
+  "updated_at": "2026-05-06",
+  "package_manager": "pnpm",
+  "build": {
+    "command": "pnpm build",
+    "status": "green",
+    "last_success": "2026-05-06",
+    "route_count": 27
+  },
+  "deployment": {
+    "provider": "Vercel",
+    "automatic_deploy": false,
+    "manual_command": "vercel --prod"
+  },
+  "product_truth": "Private AI relationship intelligence for structured case files, timelines, communication analysis, AI reports, risk scoring, compatibility analysis, and long-term relationship insight.",
+  "validated_routes": [
+    "/",
+    "/product",
+    "/pricing",
+    "/investor",
+    "/sample-report",
+    "/privacy",
+    "/signup",
+    "/login",
+    "/logout",
+    "/app",
+    "/app/cases",
+    "/app/cases/new",
+    "/app/cases/[id]",
+    "/app/cases/[id]/add-entry",
+    "/app/cases/[id]/report",
+    "/app/reports",
+    "/app/reports/[id]",
+    "/app/analyze",
+    "/report/[publicId]"
+  ],
+  "current_status": {
+    "repo_recovered": true,
+    "corrupt_tracked_files_removed": true,
+    "server_client_rules_checked": true,
+    "premium_site_polished": true,
+    "autobuilder_files_created": true,
+    "disk_cleanup_ready": true
+  },
+  "remaining_risks": [
+    "app case list and report list are polished empty states, not live authenticated indexes yet",
+    "Stripe checkout exists but monetization/paywall needs production completion",
+    "AI JSON parsing should be hardened with zod or structured output",
+    "visual QA in browser was not run in this recovery pass"
+  ]
+}

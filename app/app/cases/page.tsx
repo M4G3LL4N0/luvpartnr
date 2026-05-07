@@ -1,85 +1,51 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 
-export default async function CasesPage() {
-  const supabase = await createClient();
+const examples = [
+  "Commitment decision file",
+  "Post-conflict pattern review",
+  "Friendship trust audit",
+];
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) redirect("/login");
-
-  const { data: caseFiles, error } = await supabase
-    .from("case_files")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    return (
-      <main className="min-h-screen bg-black px-6 py-20 text-white">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-white/5 p-8">
-          <div className="text-sm text-zinc-400">Failed to load case files.</div>
-          <div className="mt-2 text-sm text-zinc-500">{error.message}</div>
-        </div>
-      </main>
-    );
-  }
-
+export default function CasesPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="grid min-h-screen md:grid-cols-[260px_1fr]">
-        <aside className="border-b md:border-r border-white/10 p-6 backdrop-blur-md">
-          {/* Same sidebar as dashboard */}
-        </aside>
-
-        <section className="p-6 sm:p-8 lg:p-10">
-          <header className="pb-10 border-b border-white/10">
-            <div className="flex items-center justify-between gap-4">
+    <main className="min-h-screen bg-black px-6 py-16 text-white">
+      <div className="mx-auto max-w-6xl">
+        <Link href="/app" className="text-sm text-white/55 hover:text-white">
+          Back to workspace
+        </Link>
+        <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+            <p className="text-xs uppercase tracking-[0.24em] text-white/40">
               Case files
-            </div>
-            <h1 className="mt-4 text-4xl font-semibold">
-              Your private relationship files
+            </p>
+            <h1 className="mt-4 text-4xl font-semibold tracking-tight">
+              Private files for meaningful relationships.
             </h1>
-            <p className="mt-3 max-w-2xl text-zinc-400">
-              Organize each person, relationship stage, and timeline in one place.
+            <p className="mt-4 max-w-2xl text-white/65">
+              Each file keeps timeline entries, message notes, reports, and
+              relationship memory separated by person or situation.
             </p>
           </div>
-
-          <Link
-            href="/app/cases/new"
-            className="rounded-full bg-white px-5 py-3 text-sm font-medium text-black"
-          >
-            New case file
+          <Link href="/app/cases/new" className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-black">
+            Create case
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-4">
-          {(caseFiles ?? []).length === 0 ? (
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-zinc-400">
-              No case files yet. Create your first private case file.
-            </div>
-          ) : (
-            caseFiles!.map((item) => (
-              <Link
-                key={item.id}
-                href={`/app/cases/${item.id}`}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:bg-white/[0.07]"
-              >
-                <h2 className="text-2xl font-semibold">{item.title}</h2>
-                <p className="mt-2 text-zinc-400">
-                  {item.subject_name || "Unnamed subject"} ·{" "}
-                  {item.relationship_stage || "Unspecified stage"} ·{" "}
-                  <span className="text-white/80">{item.relationship_type}</span>
-                </p>
-              </Link>
-            ))
-          )}
-        </div>
+        <section className="mt-10 rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-8">
+          <h2 className="text-xl font-semibold">No live case list connected here yet.</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60">
+            Use the create flow to add real Supabase-backed case files. A strong
+            first file usually includes the relationship type, the current decision,
+            and the most important timeline events.
+          </p>
+          <div className="mt-6 grid gap-3 md:grid-cols-3">
+            {examples.map((item) => (
+              <div key={item} className="rounded-xl border border-white/10 bg-black p-4 text-sm text-white/70">
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );

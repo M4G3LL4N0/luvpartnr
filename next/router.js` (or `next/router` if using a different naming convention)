@@ -1,3 +1,0 @@
-// Entire file content...
-import { useRouter } from 'next/router';
-export const useRouter = () => useRouter();

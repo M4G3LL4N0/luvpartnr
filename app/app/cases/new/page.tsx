@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function NewCasePage() {
   const supabase = createClient();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [title, setTitle] = useState("");
   const [subjectName, setSubjectName] = useState("");
@@ -16,6 +17,7 @@ export default function NewCasePage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setMessage("");
+    setIsLoading(true);
 
     const {
       data: { user },
@@ -23,6 +25,7 @@ export default function NewCasePage() {
 
     if (!user) {
       setMessage("Please log in first.");
+      setIsLoading(false);
       return;
     }
 
@@ -35,9 +38,11 @@ export default function NewCasePage() {
 
     if (error) {
       setMessage(error.message);
+      setIsLoading(false);
       return;
     }
 
+    setIsLoading(false);
     router.push("/app/cases");
     router.refresh();
   }
@@ -96,9 +101,10 @@ export default function NewCasePage() {
           </div>
 
           <button
-            className="w-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 text-sm font-medium text-white transition-all hover:from-purple-700 hover:to-pink-700 hover:shadow-lg"
+            className="w-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 text-sm font-medium text-white transition-all hover:from-purple-700 hover:to-pink-700 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
           >
-            Create Case File
+            {isLoading ? "Creating..." : "Create Case File"}
           </button>
         </form>
 

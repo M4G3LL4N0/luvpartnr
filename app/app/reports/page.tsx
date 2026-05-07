@@ -1,156 +1,55 @@
-import { createClient } from '@/lib/supabase/server';
-import Link from 'next/link';
+import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
+const reportModules = [
+  "Overall relationship score",
+  "Observed facts vs. inferences",
+  "Red flags and green flags",
+  "Missing information",
+  "One, five, and twenty year outlook",
+];
 
-export default async function ReportsPage() {
-  const supabase = await createClient();
-  const { data: reports, error } = await supabase
-    .from('reports')
-    .select('id, title, created_at, overall_score, case_file_id')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error('Error fetching reports:', error);
-    return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-        <div className="bg-red-900/30 border border-red-700 rounded-md p-6 max-w-md">
-          <p className="text-red-200">Error loading reports. Please try again later.</p>
-        </div>
-      </div>
-    );
-  }
-
+export default function ReportsPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="grid min-h-screen md:grid-cols-[260px_1fr]">
-        <aside className="border-b md:border-r border-white/10 p-6 backdrop-blur-md">
-          {/* Same sidebar as dashboard */}
-        </aside>
-
-        <section className="p-6 sm:p-8 lg:p-10">
-          <header className="pb-10 border-b border-white/10">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Relationship Reports
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-400">
-                Comprehensive behavioral insights on all your cases
-              </p>
-            </div>
+    <main className="min-h-screen bg-black px-6 py-16 text-white">
+      <div className="mx-auto max-w-6xl">
+        <Link href="/app" className="text-sm text-white/55 hover:text-white">
+          Back to workspace
+        </Link>
+        <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.24em] text-white/40">
+              Report history
+            </p>
+            <h1 className="mt-4 text-4xl font-semibold tracking-tight">
+              Decision support that keeps its reasoning visible.
+            </h1>
+            <p className="mt-4 max-w-2xl text-white/65">
+              Reports should show what is known, what is inferred, what remains
+              unknown, and what decisions deserve caution.
+            </p>
           </div>
+          <Link href="/app/cases" className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-black">
+            Open cases
+          </Link>
         </div>
 
-        {/* Reports Grid */}
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-          {reports?.length ? (
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {reports.map((report) => (
-                <div
-                  key={report.id}
-                  className="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800 hover:border-indigo-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/10"
-                >
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-semibold leading-6 text-white">
-                        {report.title}
-                      </h3>
-                      {report.overall_score !== null && (
-                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-900/40 border border-indigo-500/30">
-                          <span className="text-indigo-300 font-medium">
-                            {report.overall_score.toFixed(1)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mt-4 flex flex-col space-y-3">
-                      <div className="flex items-center text-sm text-gray-400">
-                        <span className="mr-2">📅</span>
-                        <span>
-                          {new Date(report.created_at).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-
-                      {report.case_file_id && (
-                        <div className="flex items-center text-sm text-gray-400">
-                          <span className="mr-2">📁</span>
-                          <Link
-                            href={`/app/cases/${report.case_file_id}`}
-                            className="text-indigo-400 hover:text-indigo-300 transition-colors hover:underline"
-                          >
-                            View Case File
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mt-6">
-                      <Link
-                        href={`/app/reports/${report.id}`}
-                        className="inline-flex items-center font-medium text-indigo-400 hover:text-indigo-300 transition-colors group-hover:underline"
-                      >
-                        View Full Report
-                        <svg
-                          className="ml-1 h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        <section className="mt-10 grid gap-4 md:grid-cols-5">
+          {reportModules.map((item) => (
+            <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+              <p className="text-sm leading-6 text-white/70">{item}</p>
             </div>
-          ) : (
-            <div className="text-center py-16">
-              <div className="mx-auto max-w-md">
-                <svg
-                  className="mx-auto h-12 w-12 text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                <h3 className="mt-4 text-lg font-medium text-white">
-                  No reports generated
-                </h3>
-                <p className="mt-2 text-gray-400">
-                  Create your first report by visiting a case file and clicking
-                  "Generate Report".
-                </p>
-                <div className="mt-6">
-                  <Link
-                    href="/app/cases"
-                    className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    View Cases
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+          ))}
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-dashed border-white/15 bg-zinc-950 p-8">
+          <h2 className="text-xl font-semibold">No report index data shown yet.</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/60">
+            Generate a report from a case file to create a saved report row. The
+            detail route already renders the full report schema for authenticated
+            reports.
+          </p>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

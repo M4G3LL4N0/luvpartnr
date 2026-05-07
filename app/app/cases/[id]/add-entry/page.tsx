@@ -26,35 +26,29 @@ export default function AddEntryPage() {
       return;
     }
 
-    const { error } = await supabase.from("case_entries").insert({
-      case_file_id: params.id,
-      user_id: user.id,
-      entry_type: entryType,
-      content,
-    });
+    const { data: entry, error } = await supabase
+      .from("case_entries")
+      .insert({
+        case_file_id: params.id,
+        user_id: user.id,
+        entry_type: entryType,
+        content,
+      })
+      .select("id")
+      .single();
 
     if (error) {
       setMessage(error.message);
       return;
     }
 
-    // Fire-and-forget: analyze entry in background, do not block UI
-    (async () => {
-      try {
-        await fetch("/api/analyze-entry", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            caseFileId: params.id,
-            entryType,
-            content,
-            userId: user.id,
-          }),
-        });
-      } catch (e) {
-        // Silently ignore errors
-      }
-    })();
+    if (entry?.id) {
+      void fetch("/api/analyze-entry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entryId: entry.id }),
+      }).catch(() => undefined);
+    }
 
     router.push(`/app/cases/${params.id}`);
     router.refresh();
@@ -78,11 +72,12 @@ export default function AddEntryPage() {
               value={entryType}
               onChange={(e) => setEntryType(e.target.value)}
             >
-              <option value="note">📝 Note</option>
-              <option value="event">🎯 Event</option>
-              <option value="message_summary">💬 Message Summary</option>
-              <option value="conflict">⚡ Conflict</option>
-              <option value="observation">🔍 Observation</option>
+              <option value="note">Note</option>
+              <option value="event">Event</option>
+              <option value="message_summary">Message Summary</option>
+              <option value="conflict">Conflict</option>
+              <option value="observation">Observation</option>
+              <option value="milestone">Milestone</option>
             </select>
             <p className="mt-2 text-xs text-zinc-400">
               Choose the type that best describes this interaction
@@ -107,7 +102,7 @@ export default function AddEntryPage() {
 
           <button
             type="button"
-            className="w-full rounded-xl bg-gradient-to-r from-zinc-800 to-zinc-900 px-5 py-3 text-sm font-medium text-white border border-white/10 hover:bg-zinc-700/50 transition-all hover:shadow-lg hover:shadow-black/20"
+            className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 text-sm font-medium text-white border border-white/10 hover:from-purple-700 hover:to-pink-700 transition-all hover:shadow-lg hover:shadow-black/20"
             onClick={async () => {
               if (!content.trim()) return;
               const res = await fetch("/api/analyze-message", {
@@ -118,7 +113,7 @@ export default function AddEntryPage() {
               const data = await res.json();
               if (data && !data.error) {
                 alert(
-                  `Tone: ${data.tone}\nIntent: ${data.intent}\nEmotional State: ${data.emotionalState}\n\nSuggested Replies:\n- Neutral: ${data.suggestedReplies?.neutral}\n- Confident: ${data.suggestedReplies?.confident}\n- Assertive: ${data.suggestedReplies?.assertive}`
+                  `Tone: ${data.tone}\nIntent: ${data.intent}\nEmotional State: ${data.emotionalState}\n\nSuggested Replies:\n- Neutral: ${data.suggestedResponses?.neutral}\n- Confident: ${data.suggestedResponses?.confident}\n- Assertive: ${data.suggestedResponses?.assertive}`
                 );
               } else {
                 alert("Could not analyze message.");
@@ -126,7 +121,7 @@ export default function AddEntryPage() {
             }}
             style={{ marginTop: 8, marginBottom: 8 }}
           >
-            Analyze with AI
+            Analyze Message Tone
           </button>
 
           <button className="w-full rounded-xl bg-gradient-to-r from-white to-zinc-200 px-5 py-3 text-sm font-medium text-black hover:bg-white/90 transition-all hover:shadow-lg hover:shadow-white/10">

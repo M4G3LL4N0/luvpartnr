@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { createClient as createSupabaseClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const hasOpenAI = Boolean(process.env.OPENAI_API_KEY);
+const openai = hasOpenAI
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 type ReportData = {
   executiveSummary: string;

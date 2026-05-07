@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "project": "LUVPARTNR",
+  "prioritized_tasks": [
+    {
+      "priority": 1,
+      "task": "stabilize build and remove corrupt files",
+      "status": "completed",
+      "notes": "Build is green; corrupt tracked prompt artifacts and unsupported config were removed."
+    },
+    {
+      "priority": 2,
+      "task": "polish reports",
+      "status": "next",
+      "notes": "Connect reports index to Supabase and improve score visualization/share controls."
+    },
+    {
+      "priority": 3,
+      "task": "improve analyzer",
+      "status": "next",
+      "notes": "Add saved analyses, copy-to-clipboard replies, and clearer risk explanations."
+    },
+    {
+      "priority": 4,
+      "task": "complete monetization",
+      "status": "planned",
+      "notes": "Finish Stripe production checkout, subscription state, and paywall enforcement."
+    },
+    {
+      "priority": 5,
+      "task": "improve onboarding",
+      "status": "planned",
+      "notes": "Guide a new user through first case, first entry, and first report."
+    },
+    {
+      "priority": 6,
+      "task": "improve sharing",
+      "status": "planned",
+      "notes": "Add public/private share controls, redaction, and revocation."
+    },
+    {
+      "priority": 7,
+      "task": "mobile polish",
+      "status": "planned",
+      "notes": "Run viewport QA and tighten long text, controls, and case timelines."
+    },
+    {
+      "priority": 8,
+      "task": "SEO growth",
+      "status": "planned",
+      "notes": "Add targeted pages around relationship intelligence, compatibility analysis, and communication analysis."
+    }
+  ]
+}
