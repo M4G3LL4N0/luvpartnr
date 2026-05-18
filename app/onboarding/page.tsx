@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { SubpageVisual } from "@/components/SubpageVisual";
 
 export default function Onboarding() {
   const router = useRouter();
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+      <SubpageVisual variant="default" />
       <div className="max-w-4xl text-center">
         <h1 className="text-5xl font-extrabold mb-8"> Unlock the Power of Behavioral Insights </h1>
         <p className="text-xl mb-8"> Track every interaction. Analyze behavioral patterns. Transform your understanding of human dynamics. </p>

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { SubpageVisual } from "@/components/SubpageVisual";
 import Link from "next/link";
 
 export default async function PublicReportPage({
@@ -18,6 +19,7 @@ export default async function PublicReportPage({
   if (!report) {
     return (
       <main className="min-h-screen bg-black px-6 py-20 text-white">
+      <SubpageVisual variant="default" />
         <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-8">
           <h1 className="text-3xl font-semibold">Report not found</h1>
           <p className="mt-3 text-white/60">This public report link is unavailable.</p>

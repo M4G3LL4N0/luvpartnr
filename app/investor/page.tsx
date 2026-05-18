@@ -1,3 +1,4 @@
+import { SubpageVisual } from "@/components/SubpageVisual";
 const sections = [
   {
     title: "Category",
@@ -20,6 +21,7 @@ const sections = [
 export default function InvestorPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white lg:px-8">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-6xl">
         <p className="text-xs uppercase tracking-[0.28em] text-white/45">Investor narrative</p>
         <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl">

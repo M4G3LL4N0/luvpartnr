@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubpageVisual } from "@/components/SubpageVisual";
 
 const reportModules = [
   "Overall relationship score",
@@ -11,6 +12,7 @@ const reportModules = [
 export default function ReportsPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-16 text-white">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-6xl">
         <Link href="/app" className="text-sm text-white/55 hover:text-white">
           Back to workspace

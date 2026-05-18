@@ -1,6 +1,8 @@
+import { SubpageVisual } from "@/components/SubpageVisual";
 export default function SampleReportPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-24 text-white lg:px-8">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-5xl">
         <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">Sample report</div>
         <h1 className="mt-4 text-5xl font-semibold tracking-tight">Structured relationship intelligence, at a glance.</h1>

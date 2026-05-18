@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubpageVisual } from "@/components/SubpageVisual";
 
 const modules = [
   {
@@ -21,6 +22,7 @@ const modules = [
 export default function AppDashboardPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-16 text-white">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-6xl">
         <p className="text-xs font-medium uppercase tracking-[0.28em] text-white/45">
           Private intelligence workspace

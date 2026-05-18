@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { SubpageVisual } from "@/components/SubpageVisual";
 
 export default function Dashboard() {
   return (
     <main className="min-h-screen bg-black text-white">
+      <SubpageVisual variant="dashboard" />
       {/* Existing premium section */}
       <div className="grid min-h-screen md:grid-cols-[280px_1fr]">
         <aside className="border-r border-white/10 p-6">

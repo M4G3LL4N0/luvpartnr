@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SubpageVisual } from "@/components/SubpageVisual";
 import { createClient } from "@/lib/supabase/client";
 import { useParams, useRouter } from "next/navigation";
 
@@ -56,6 +57,7 @@ export default function AddEntryPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-zinc-900 to-black px-6 py-20 text-white">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-xl rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900/50 to-zinc-900/20 p-8 shadow-2xl shadow-black/50">
         <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">New Entry</div>
         <h1 className="mt-4 text-4xl font-semibold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">

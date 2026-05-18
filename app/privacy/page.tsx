@@ -1,3 +1,4 @@
+import { SubpageVisual } from "@/components/SubpageVisual";
 const principles = [
   "Use information you have legitimate access to.",
   "Treat AI outputs as interpretations, not proof.",
@@ -8,6 +9,7 @@ const principles = [
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white lg:px-8">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-4xl">
         <p className="text-xs uppercase tracking-[0.28em] text-white/45">Privacy and ethics</p>
         <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">

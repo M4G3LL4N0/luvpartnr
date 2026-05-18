@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubpageVisual } from "@/components/SubpageVisual";
 
 const tiers = [
   {
@@ -25,6 +26,7 @@ const tiers = [
 export default function PricingPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white lg:px-8">
+      <SubpageVisual variant="pricing" />
       <div className="mx-auto max-w-6xl">
         <p className="text-xs uppercase tracking-[0.28em] text-white/45">Pricing</p>
         <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { SubpageVisual } from "@/components/SubpageVisual";
 import { createClient } from "@/lib/supabase/server";
 
 type ReportJson = {
@@ -46,6 +47,7 @@ export default async function PublicReportDetailPage({
 
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-5xl">
         <div>
           <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">

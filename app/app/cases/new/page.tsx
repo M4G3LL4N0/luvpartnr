@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SubpageVisual } from "@/components/SubpageVisual";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -49,6 +50,7 @@ export default function NewCasePage() {
 
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8">
         <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">New Case File</div>
         <h1 className="mt-4 text-4xl font-semibold">Create a Private File</h1>

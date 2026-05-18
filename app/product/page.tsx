@@ -1,3 +1,4 @@
+import { SubpageVisual } from "@/components/SubpageVisual";
 export default function ProductPage() {
   const features = [
     {
@@ -27,8 +28,10 @@ export default function ProductPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-black px-4 py-12 sm:px-6 lg:px-8 text-white">
-      <div className="mx-auto max-w-6xl">
+    <main className="relative min-h-screen overflow-x-hidden px-4 py-12 text-white sm:px-6 lg:px-8">
+      <SubpageVisual variant="default" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_circle_at_20%_-10%,rgba(244,114,182,0.12),transparent_50%),radial-gradient(600px_circle_at_90%_20%,rgba(167,139,250,0.1),transparent_45%)]" aria-hidden />
+      <div className="relative mx-auto max-w-6xl">
         <div className="text-xs uppercase tracking-[0.2em] text-zinc-400">
           Product
         </div>
@@ -47,7 +50,7 @@ export default function ProductPage() {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="rounded-3xl border border-white/10 bg-white/5 p-8 hover:bg-white/[0.07] transition-colors"
+              className="rounded-[1.35rem] border border-white/12 bg-white/[0.06] p-8 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-fuchsia-300/25 hover:bg-white/[0.08]"
             >
               <div className="flex items-center justify-between">
                 <h2 className="text-xl sm:text-2xl font-semibold">{feature.title}</h2>

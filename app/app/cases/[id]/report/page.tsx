@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { SubpageVisual } from "@/components/SubpageVisual";
 import { createClient } from "@/lib/supabase/server";
 import GenerateReportButton from "./report-button";
 
@@ -47,6 +48,7 @@ export default async function CaseReportPage({
 
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white">
+      <SubpageVisual variant="default" />
       <div className="mx-auto max-w-5xl">
         <div className="flex items-center justify-between gap-4">
           <div>

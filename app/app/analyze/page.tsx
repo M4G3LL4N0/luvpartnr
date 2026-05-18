@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SubpageVisual } from "@/components/SubpageVisual";
 
 type AnalysisResult = {
   tone?: string;
@@ -49,6 +50,7 @@ export default function AnalyzePage() {
 
   return (
     <main className="min-h-screen bg-black px-6 py-16 text-white">
+      <SubpageVisual variant="default" />
       <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <section>
           <p className="text-xs font-medium uppercase tracking-[0.28em] text-white/45">
