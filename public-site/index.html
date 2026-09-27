@@ -11,29 +11,33 @@
 html,body{max-width:100%;overflow-x:hidden}
 h1,h2,p,li,a{overflow-wrap:anywhere}
 
-body { margin:0; background:#ffe8dc; color:#2a120c; font:18px/1.4 ui-sans-serif, system-ui; }
-.stage { min-height:100vh; display:grid; place-items:center; padding:24px; }
-.ticket { width:min(560px, 100%); background:#2a120c; color:#ffe8dc; padding:28px; border-radius:18px 18px 8px 8px; }
-hr { border:0; border-top:2px dashed #fb7185; margin:16px 0; }
-h1 { font-size:40px; margin:8px 0; }
-h2 { font-size:22px; font-weight:600; }
-.cta { display:inline-block; margin-top:12px; background:#fb7185; color:#ffe8dc; text-decoration:none; padding:12px 14px; border-radius:999px; }
-.notes { padding:8px 24px 32px; }
+body { margin:0; background:#06141a; color:#d7f6ff; font:17px/1.45 "Palatino Linotype", Palatino, serif; }
+.sheet { max-width:760px; margin:28px auto; background:#0b242c; padding:28px; border-top:8px solid #67e8f9; }
+.rule { letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:#67e8f9; }
+h1 { font-size:42px; margin:8px 0; }
+h2 { font-weight:500; font-size:22px; }
+table { width:100%; border-collapse:collapse; margin-top:12px; }
+td, th { border-bottom:1px solid #d7f6ff; text-align:left; padding:8px 4px; }
+.cta { display:inline-block; margin-top:16px; color:#06141a; background:#d7f6ff; text-decoration:none; padding:10px 14px; }
+#scope { max-width:760px; margin:0 auto 32px; }
 
 </style>
 </head>
 <body>
 
-<main class="stage">
-  <section class="ticket">
-    <p>Lab</p>
-    <h1>LuvPartnr</h1>
-    <hr />
-    <h2>Understand people before you commit.</h2>
-    <p class="lede">LUVPARTNR turns relationship notes, messages, events, and uncertainty into private case files, structured reports, risk signals, and clearer next steps.</p>
-    <a class="cta" href="#scope">Open the stub</a>
-  </section>
-</main>
-<section id="scope" class="notes"><ol><li>The page describes the current work. It does not invent customers.</li><li>A live signup, price, or metric appears here only when the product has one.</li><li>Maturity on this page is a label, not a launch claim.</li></ol></section>
+<article class="sheet">
+  <p class="rule">Lab · ledger</p>
+  <h1>LuvPartnr</h1>
+  <h2>Understand people before you commit.</h2>
+  <p>LUVPARTNR turns relationship notes, messages, events, and uncertainty into private case files, structured reports, risk signals, and clearer next steps.</p>
+  <table>
+    <tr><th>Field</th><th>Record</th></tr>
+    <tr><td>Customers</td><td>None claimed</td></tr>
+    <tr><td>Metrics</td><td>None claimed</td></tr>
+    <tr><td>Status</td><td>Lab</td></tr>
+  </table>
+  <a class="cta" href="#scope">Read the notes</a>
+</article>
+<section id="scope"><ul><li>The page describes the current work. It does not invent customers.</li><li>A live signup, price, or metric appears here only when the product has one.</li><li>Maturity on this page is a label, not a launch claim.</li></ul></section>
 </body>
 </html>
